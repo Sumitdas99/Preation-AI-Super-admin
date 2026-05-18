@@ -1,4 +1,5 @@
 import { request } from "../client";
+import { API_BASE_URL } from "@/lib/env";
 import {
   ActivateSubscriptionRequest,
   ActivateSubscriptionResponse,
@@ -173,5 +174,23 @@ export function activateSubscription(
     body: payload,
     schema: ActivateSubscriptionResponse,
     headers: billingHeaders(scenario),
+  });
+}
+
+export interface BillingBrandPayload {
+  name: string;
+  country: string;
+  admin_name: string;
+  admin_email: string;
+  address: string;
+}
+
+export function createBillingBrand(
+  payload: BillingBrandPayload,
+): Promise<any> {
+  const baseUrl = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  return request(`${baseUrl}/api/v1/billing/admin/brands`, {
+    method: "POST",
+    body: payload,
   });
 }

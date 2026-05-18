@@ -3,6 +3,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { createBillingBrand } from "@/api/endpoints/billing";
 import { Button } from "@/components/ui/button";
 import {
   AdminTopBar,
@@ -57,11 +60,38 @@ export default function SuperAdminBrandPackOnboard() {
     packConfigFormDefaults,
   );
 
+  const billingBrandMutation = useMutation({
+    mutationFn: createBillingBrand,
+    onSuccess: (data) => {
+      console.log("Brand created successfully via React Query:", data);
+      toast.success("Brand details saved successfully");
+    },
+    onError: (error) => {
+      console.error("Failed to create brand via React Query:", error);
+      toast.error("Failed to save brand details", {
+        description: error instanceof Error ? error.message : "Network error occurred",
+      });
+    },
+  });
+
   const stepIndex = searchParams.get("step") === "pack" && brandDetails ? 1 : 0;
 
-  const handleContinue = detailsForm.handleSubmit((values) => {
-    setBrandDetails(values);
-    navigate("?step=pack");
+  const handleContinue = detailsForm.handleSubmit(async (values) => {
+    try {
+      const payload = {
+        name: values.brand_name,
+        country: values.registered_country,
+        admin_name: values.brand_admin_name,
+        admin_email: values.brand_admin_email,
+        address: values.registered_address,
+      };
+
+      await billingBrandMutation.mutateAsync(payload);
+      setBrandDetails(values);
+      navigate("?step=pack");
+    } catch (error) {
+      // Error handling is managed by onError inside useMutation
+    }
   });
 
   const handleBack = () => {
@@ -143,6 +173,7 @@ export default function SuperAdminBrandPackOnboard() {
                   <Button
                     type="button"
                     variant="outline"
+                    disabled={billingBrandMutation.isPending}
                     onClick={() => navigate(-1)}
                     className="h-11 shrink-0 rounded-lg border-slate-300 bg-white font-bold text-slate-700 hover:bg-slate-50 px-6 shadow-none"
                   >
@@ -151,9 +182,10 @@ export default function SuperAdminBrandPackOnboard() {
                   <Button
                     type="submit"
                     variant="outline"
-                    className="h-11 shrink-0 rounded-lg border-[#0A1F44] bg-white font-bold text-[#0A1F44] hover:bg-slate-50 px-6 shadow-none"
+                    disabled={billingBrandMutation.isPending}
+                    className="h-11 shrink-0 rounded-lg border-[#0A1F44] bg-white font-bold text-[#0A1F44] hover:bg-slate-50 px-6 shadow-none flex items-center justify-center gap-2"
                   >
-                    Continue to Pack Configuration →
+                    {billingBrandMutation.isPending ? "Saving..." : "Continue to Pack Configuration →"}
                   </Button>
                 </footer>
               </form>
