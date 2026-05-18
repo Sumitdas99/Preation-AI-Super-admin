@@ -1,5 +1,6 @@
-import { type ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { Menu } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export interface BreadcrumbSegment {
   label: string;
@@ -44,9 +45,27 @@ export function AdminTopBar({ title, breadcrumbs, rightSlot, onMenuClick }: Admi
 
       <span className="h-5 w-px shrink-0 bg-white/20" aria-hidden />
 
-      <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">
-        {title}
-      </span>
+      {breadcrumbs && breadcrumbs.length > 0 ? (
+        <nav aria-label="Breadcrumbs" className="min-w-0 flex-1 truncate text-sm font-medium text-white/95">
+          <ol className="flex items-center gap-2 overflow-hidden">
+            {breadcrumbs.map((seg, idx) => (
+              <Fragment key={idx}>
+                {idx > 0 && <span className="text-white/40 font-normal">→</span>}
+                <li className={cn(
+                  "truncate",
+                  idx === breadcrumbs.length - 1 ? "text-white font-semibold" : "text-white/60 font-normal"
+                )}>
+                  {seg.label}
+                </li>
+              </Fragment>
+            ))}
+          </ol>
+        </nav>
+      ) : (
+        <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">
+          {title}
+        </span>
+      )}
 
       <div className="ml-auto flex shrink-0 items-center gap-2">
         <span className={PILL}>Super Admin</span>

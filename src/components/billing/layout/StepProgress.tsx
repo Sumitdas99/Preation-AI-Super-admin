@@ -21,13 +21,15 @@ export function StepProgress({
   return (
     <nav
       aria-label="Onboarding progress"
-      className={cn("border-b border-border bg-card", className)}
+      className={cn("w-full border-b border-slate-200 bg-white", className)}
     >
-      <ol className="mx-auto flex max-w-[1180px] items-center gap-3 px-6 py-[18px]">
+      <ol className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-[18px]">
         {steps.map((step, idx) => {
           const isComplete = idx < activeIndex;
           const isActive = idx === activeIndex;
           const prevComplete = idx > 0 && idx - 1 < activeIndex;
+          const stepLabel = idx === 0 ? "Step 1 — Brand Details" : idx === 1 ? "Step 2 — Pack Configuration" : step.label;
+          
           return (
             <Fragment key={step.id}>
               {idx > 0 && (
@@ -35,15 +37,12 @@ export function StepProgress({
                   aria-hidden
                   className={cn(
                     "h-0.5 min-w-6 flex-1 rounded-full transition-colors",
-                    prevComplete ? "bg-[#0A1F44]" : "bg-[#0A1F44]/20",
+                    prevComplete ? "bg-emerald-600" : "bg-slate-200",
                   )}
                 />
               )}
               <li
-                className={cn(
-                  "flex shrink-0 items-center gap-2.5",
-                  !isComplete && !isActive && "opacity-40",
-                )}
+                className="flex shrink-0 items-center gap-2.5"
                 aria-current={isActive ? "step" : undefined}
               >
                 <StepBadge
@@ -53,11 +52,13 @@ export function StepProgress({
                 />
                 <span
                   className={cn(
-                    "font-display text-base tracking-tight text-[#0A1F44]",
-                    isActive ? "font-[550] text-blue-700" : "font-[450]",
+                    "font-display text-sm md:text-base tracking-tight transition-colors",
+                    isActive && "font-semibold text-blue-900",
+                    isComplete && "font-semibold text-emerald-700",
+                    !isActive && !isComplete && "font-medium text-slate-400"
                   )}
                 >
-                  {step.label}
+                  {stepLabel}
                 </span>
               </li>
             </Fragment>
@@ -69,7 +70,7 @@ export function StepProgress({
 }
 
 const BADGE_BASE =
-  "flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full text-[13px] font-semibold transition-shadow";
+  "flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full text-[13px] font-bold transition-all";
 
 function StepBadge({
   index,
@@ -82,7 +83,7 @@ function StepBadge({
 }) {
   if (complete) {
     return (
-      <span className={cn(BADGE_BASE, "bg-[#0A1F44] text-white")}>
+      <span className={cn(BADGE_BASE, "bg-emerald-600 text-white")}>
         <Check className="h-[17px] w-[17px]" aria-hidden strokeWidth={2.5} />
       </span>
     );
@@ -90,14 +91,14 @@ function StepBadge({
   if (active) {
     return (
       <span
-        className={cn(BADGE_BASE, "bg-[#0A1F44] text-white ring-4 ring-blue-100")}
+        className={cn(BADGE_BASE, "bg-[#0A1F44] text-white ring-[5px] ring-blue-100/80")}
       >
         {index}
       </span>
     );
   }
   return (
-    <span className={cn(BADGE_BASE, "bg-[#0A1F44] text-white")}>
+    <span className={cn(BADGE_BASE, "border-2 border-slate-200 bg-white text-slate-400")}>
       {index}
     </span>
   );

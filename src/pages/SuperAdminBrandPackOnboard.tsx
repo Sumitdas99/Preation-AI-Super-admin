@@ -118,40 +118,50 @@ export default function SuperAdminBrandPackOnboard() {
       <StepProgress steps={STEPS} activeIndex={stepIndex} />
 
       <main className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto w-full max-w-4xl space-y-5 px-6 py-6">
+        <div className="mx-auto w-full max-w-6xl space-y-6 px-6 py-8">
 
           {stepIndex === 0 ? (
-            <form
-              onSubmit={handleContinue}
-              className="mx-auto max-w-2xl space-y-5"
-              noValidate
-            >
-              <BrandDetailsForm
-                control={detailsForm.control}
-              />
-              <footer className="flex flex-col-reverse items-stretch gap-3 rounded-md border border-border bg-card px-6 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => navigate(-1)}
-                  className="h-11 shrink-0 border-0 bg-slate-100 font-semibold text-slate-800 hover:bg-slate-200"
-                >
-                  <ChevronLeft className="h-4 w-4" aria-hidden />
-                  Back
-                </Button>
-                <Button
-                  type="submit"
-                  className="h-11 shrink-0 bg-[#0f1d3b] text-sm font-bold text-white hover:bg-[#1a2c52] focus-visible:ring-[#0f1d3b]"
-                >
-                  Continue to pack configuration
-                  <ChevronRight className="h-4 w-4" aria-hidden />
-                </Button>
-              </footer>
-            </form>
+            <div className="space-y-6">
+              <div className="space-y-1.5">
+                <h1 className="text-3xl font-display font-bold text-[#0A1F44] tracking-tight">
+                  Brand Details
+                </h1>
+                <p className="text-sm font-medium leading-relaxed text-slate-500">
+                  Step 1 of 2 — complete before configuring billing pack. Brand Admin invitation is sent only after pack is configured in Step 2.
+                </p>
+              </div>
+
+              <form
+                onSubmit={handleContinue}
+                className="space-y-6"
+                noValidate
+              >
+                <BrandDetailsForm
+                  control={detailsForm.control}
+                />
+                <footer className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => navigate(-1)}
+                    className="h-11 shrink-0 rounded-lg border-slate-300 bg-white font-bold text-slate-700 hover:bg-slate-50 px-6 shadow-none"
+                  >
+                    ← Back
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="outline"
+                    className="h-11 shrink-0 rounded-lg border-[#0A1F44] bg-white font-bold text-[#0A1F44] hover:bg-slate-50 px-6 shadow-none"
+                  >
+                    Continue to Pack Configuration →
+                  </Button>
+                </footer>
+              </form>
+            </div>
           ) : null}
 
           {stepIndex === 1 && brandDetails ? (
-            <>
+            <div className="space-y-6">
               <PackConfigurationForm
                 brandName={brandNameForSummary}
                 defaultValues={packDraft}
@@ -176,7 +186,7 @@ export default function SuperAdminBrandPackOnboard() {
                 ghostLabel="Back to brand details"
                 onGhost={handleBack}
               />
-            </>
+            </div>
           ) : null}
         </div>
       </main>

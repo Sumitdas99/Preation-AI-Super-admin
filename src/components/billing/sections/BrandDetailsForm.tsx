@@ -19,7 +19,7 @@ export function BrandDetailsForm({ control }: BrandDetailsFormProps) {
         title="Brand information"
         subtitle="Used by Stripe for invoicing and by the brand admin for sign-in"
       />
-      <div className="grid gap-4 px-6 py-5">
+      <div className="grid gap-x-6 gap-y-4 px-6 py-5 md:grid-cols-2">
         <Controller
           control={control}
           name="brand_name"
@@ -121,6 +121,7 @@ export function BrandDetailsForm({ control }: BrandDetailsFormProps) {
               id="registered_address"
               label="Registered address"
               required
+              className="md:col-span-2"
               filled={(field.value ?? "").trim().length >= 8}
               hint="Shown on Stripe invoices"
             >
