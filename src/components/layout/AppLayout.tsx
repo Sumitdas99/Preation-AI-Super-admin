@@ -60,9 +60,9 @@ export function AppLayout() {
     >
       <div className="flex h-screen w-full overflow-hidden bg-background">
         <AppSidebar />
-        <SidebarInset className="flex flex-1 flex-col overflow-hidden md:my-2 md:mr-2 md:rounded-xl md:border md:shadow-xs bg-card">
-          <Header />
+        <SidebarInset className="flex flex-1 flex-col overflow-hidden">
           <main className="flex-1 overflow-y-auto">
+            <Header />
             <Outlet />
           </main>
         </SidebarInset>

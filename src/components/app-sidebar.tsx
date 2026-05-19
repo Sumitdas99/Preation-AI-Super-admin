@@ -24,6 +24,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
   { name: "Super Admin Console", href: "/super-admin-console", icon: LayoutDashboard },
@@ -84,15 +85,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border p-4">
-        <div className="rounded-lg bg-sidebar-accent p-3">
-          <p className="text-sm font-semibold text-sidebar-primary">
-            {user?.brandName || "Super Admin"}
-          </p>
-          {user && (
-            <p className="mt-0.5 text-xs text-sidebar-foreground/60 capitalize">
-              Super Admin
+        <div className="flex items-center justify-between rounded-lg bg-sidebar-accent p-3">
+          <div>
+            <p className="text-sm font-semibold text-sidebar-primary">
+              {user?.brandName || "Super Admin"}
             </p>
-          )}
+            {user && (
+              <p className="mt-0.5 text-xs text-sidebar-foreground/60 capitalize">
+                Super Admin
+              </p>
+            )}
+          </div>
+          <ThemeToggle />
         </div>
       </SidebarFooter>
     </Sidebar>

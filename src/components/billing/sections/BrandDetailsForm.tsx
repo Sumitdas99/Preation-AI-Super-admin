@@ -13,7 +13,7 @@ interface BrandDetailsFormProps {
 
 export function BrandDetailsForm({ control }: BrandDetailsFormProps) {
   return (
-    <section className="overflow-hidden rounded-lg border-[1.25px] border-slate-200 bg-card shadow-sm">
+    <section className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
       <SectionHeading
         index={1}
         title="Brand information"

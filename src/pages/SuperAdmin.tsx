@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -30,24 +31,36 @@ const metrics = [
     value: "247",
     change: "+12%",
     icon: Building2,
+    gradient: "from-blue-500/20 via-blue-500/5 to-transparent",
+    iconBg: "bg-blue-500/10",
+    iconColor: "text-blue-500",
   },
   {
     title: "Total Users",
     value: "3,482",
     change: "+8%",
     icon: Users,
+    gradient: "from-emerald-500/20 via-emerald-500/5 to-transparent",
+    iconBg: "bg-emerald-500/10",
+    iconColor: "text-emerald-500",
   },
   {
     title: "Monthly Revenue",
     value: "$127.5K",
     change: "+23%",
     icon: CreditCard,
+    gradient: "from-amber-500/20 via-amber-500/5 to-transparent",
+    iconBg: "bg-amber-500/10",
+    iconColor: "text-amber-500",
   },
   {
     title: "API Requests",
     value: "12.4M",
     change: "+15%",
     icon: Activity,
+    gradient: "from-purple-500/20 via-purple-500/5 to-transparent",
+    iconBg: "bg-purple-500/10",
+    iconColor: "text-purple-500",
   },
 ];
 
@@ -97,12 +110,12 @@ const systemAlerts = [
 
 export default function SuperAdmin() {
   return (
-    <div className="space-y-4 p-6 animate-fade-in">
+    <div className="space-y-4 p-4 sm:p-6 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold">Super Admin Console</h1>
-          <p className="mt-1 text-muted-foreground">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold">Super Admin Console</h1>
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">
             Platform-wide monitoring and workspace management
           </p>
         </div>
@@ -110,16 +123,20 @@ export default function SuperAdmin() {
       </div>
 
       {/* Platform Metrics */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {metrics.map((metric) => (
-          <Card key={metric.title} className="card-shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <Card key={metric.title} className={cn("card-shadow relative overflow-hidden border-none bg-gradient-to-br", metric.gradient)}>
+            <div className={cn("absolute -right-6 -top-6 h-32 w-32 rounded-full blur-3xl", metric.iconBg.replace('/10', '/30'))} />
+            
+            <CardHeader className="relative z-10 flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 {metric.title}
               </CardTitle>
-              <metric.icon className="h-5 w-5 text-muted-foreground" />
+              <div className={cn("flex h-10 w-10 items-center justify-center rounded-xl bg-background shadow-sm", metric.iconBg)}>
+                <metric.icon className={cn("h-5 w-5", metric.iconColor)} />
+              </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="relative z-10">
               <div className="text-3xl font-bold font-display">{metric.value}</div>
               <div className="mt-2 flex items-center gap-1 text-sm">
                 <TrendingUp className="h-4 w-4 text-success" />
@@ -132,7 +149,7 @@ export default function SuperAdmin() {
       </div>
 
       {/* Top Workspaces */}
-      <Card className="card-shadow">
+      <Card className="card-shadow border-none bg-gradient-to-br from-blue-500/5 via-card to-card">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -151,14 +168,17 @@ export default function SuperAdmin() {
             {topBrands.map((brand) => (
               <div
                 key={brand.name}
-                className="flex items-center gap-4 rounded-lg border border-border p-4 transition-colors hover:bg-accent/50"
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-lg border border-border p-4 transition-colors hover:bg-accent/50"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-light">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary-light hidden sm:flex">
                   <Building2 className="h-6 w-6 text-primary" />
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold">{brand.name}</p>
+                <div className="flex-1 w-full">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-light sm:hidden">
+                      <Building2 className="h-4 w-4 text-primary" />
+                    </div>
+                    <p className="font-semibold text-sm sm:text-base">{brand.name}</p>
                     <Badge variant="outline">{brand.plan}</Badge>
                     {brand.health === "critical" && (
                       <Badge variant="outline" className="status-block">
@@ -173,16 +193,16 @@ export default function SuperAdmin() {
                       </Badge>
                     )}
                   </div>
-                  <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                     <span>{brand.users} users</span>
-                    <span>•</span>
+                    <span className="hidden sm:inline">•</span>
                     <div className="flex items-center gap-2">
-                      <Progress value={brand.usage} className="h-2 w-24" />
+                      <Progress value={brand.usage} className="h-2 w-16 sm:w-24" />
                       <span>{brand.usage}% usage</span>
                     </div>
                   </div>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="w-full sm:w-auto mt-2 sm:mt-0">
                   Manage
                 </Button>
               </div>
@@ -192,25 +212,26 @@ export default function SuperAdmin() {
       </Card>
 
       {/* System Alerts */}
-      <Card className="card-shadow">
+      <Card className="card-shadow overflow-hidden border-none bg-gradient-to-br from-amber-500/5 via-card to-card">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <CardTitle className="text-xl font-display flex items-center gap-2">
+              <CardTitle className="text-lg sm:text-xl font-display flex items-center gap-2">
                 <Bell className="h-5 w-5 text-warning" />
                 System Alerts
               </CardTitle>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                 Anomaly detection and risk assessment alerts
               </p>
             </div>
-            <Badge variant="outline" className="status-warning">
+            <Badge variant="outline" className="status-warning w-fit">
               {systemAlerts.length} Active Alerts
             </Badge>
           </div>
         </CardHeader>
-        <CardContent>
-          <Table>
+        <CardContent className="px-0 sm:px-6">
+          <div className="overflow-x-auto">
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Severity</TableHead>
@@ -255,12 +276,13 @@ export default function SuperAdmin() {
               ))}
             </TableBody>
           </Table>
+          </div>
         </CardContent>
       </Card>
 
       {/* System Health */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="card-shadow">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
+        <Card className="card-shadow border-none bg-gradient-to-br from-emerald-500/5 via-card to-card">
           <CardHeader>
             <CardTitle className="font-display">System Health</CardTitle>
           </CardHeader>
@@ -296,7 +318,7 @@ export default function SuperAdmin() {
           </CardContent>
         </Card>
 
-        <Card className="card-shadow">
+        <Card className="card-shadow border-none bg-gradient-to-br from-purple-500/5 via-card to-card">
           <CardHeader>
             <CardTitle className="font-display">Recent Activity</CardTitle>
           </CardHeader>

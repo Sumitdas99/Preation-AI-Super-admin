@@ -25,11 +25,11 @@ const privateRoutes: RouteObject[] = [
       { path: "/settings", element: <Settings /> },
       { path: "/brand-admin-requests", element: <BrandAdminRequests /> },
       { path: "/user-management", element: <UserManagement /> },
+      { path: "/super-admin/brand-packs", element: <SuperAdminBrandPacks /> },
+      { path: "/super-admin/brand-packs/:brandId", element: <SuperAdminBrandPacks /> },
+      { path: "/super-admin/brand-packs/new", element: <SuperAdminBrandPackOnboard /> },
     ],
   },
-  { path: "/super-admin/brand-packs", element: <SuperAdminBrandPacks /> },
-  { path: "/super-admin/brand-packs/:brandId", element: <SuperAdminBrandPacks /> },
-  { path: "/super-admin/brand-packs/new", element: <SuperAdminBrandPackOnboard /> },
 ];
 
 export default privateRoutes;

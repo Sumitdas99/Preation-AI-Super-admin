@@ -8,13 +8,13 @@ export interface BreadcrumbSegment {
 }
 
 const BAR =
-  "flex h-16 shrink-0 items-center gap-3 bg-[#0A1F44] px-4 text-white shadow-sm overflow-hidden sm:gap-4 sm:px-6";
+  "flex h-16 shrink-0 items-center gap-3  px-4 text-white shadow-sm overflow-hidden sm:gap-4 sm:px-6";
 
 const PILL =
   "shrink-0 whitespace-nowrap rounded-md border-[1.5px] border-[#E8943A]/50 bg-[#E8943A]/10 px-4 py-1.5 text-xs font-medium text-[#F5A623]";
 
 const SUPER_ADMIN_TAG =
-  "ml-1 shrink-0 whitespace-nowrap rounded bg-[#E8943A] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#0A1F44]";
+  "ml-1 shrink-0 whitespace-nowrap rounded  px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#0A1F44]";
 
 interface AdminTopBarProps {
   title: string;

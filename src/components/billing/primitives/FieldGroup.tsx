@@ -36,14 +36,14 @@ export function FieldGroup({
           htmlFor={id}
           className={cn(
             "flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-bold uppercase tracking-wider",
-            isDark ? "text-white/80" : "text-slate-600",
+            isDark ? "text-white/80" : "text-foreground",
           )}
         >
           {label}
           {required && !filled ? (
             <span className={cn(
               "text-xs font-semibold normal-case tracking-normal",
-              isDark ? "text-rose-400" : "text-rose-700",
+              isDark ? "text-rose-400" : "text-destructive",
             )}>
               Required
             </span>
@@ -56,7 +56,7 @@ export function FieldGroup({
         <p
           className={cn(
             "text-[11px] font-bold leading-snug",
-            isDark ? "text-white/60" : "text-slate-500",
+            isDark ? "text-white/60" : "text-muted-foreground",
           )}
         >
           {hint}
@@ -80,7 +80,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           "h-10 rounded-md text-sm shadow-none focus:border-2 focus:outline-hidden focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0",
           isDark
             ? "border-white/15 bg-white/5 text-white placeholder:text-white/40 focus:border-[#E8943A]"
-            : "border-slate-300 bg-white text-slate-900 placeholder:text-slate-300 placeholder:italic focus:border-[#0A1F44]",
+            : "border-input bg-background text-foreground placeholder:text-muted-foreground placeholder:italic focus:border-primary",
           className,
         )}
         {...rest}

@@ -49,6 +49,8 @@ import { ActivateDeactivateModal } from "@/components/ActivateDeactivateModal";
 import { TransferBrandAdminDialog } from "@/components/TransferBrandAdminDialog";
 import { CreateBrandAdminDialog } from "@/components/CreateBrandAdminDialog";
 import { AddUserToBrandDialog } from "@/components/AddUserToBrandDialog";
+import { UsersTable } from "@/components/UsersTable";
+import { InvitedUsersTable } from "@/components/InvitedUsersTable";
 import { adminApi } from "@/api/admin";
 import { toastSuccess, toastError, toastInfo } from "@/utils/toast";
 
@@ -563,128 +565,23 @@ export default function UserManagement() {
             </div>
           ) : (
             <>
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Full Name</TableHead>
-                      <TableHead>Work Email</TableHead>
-                      <TableHead>Brand Name</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Approval</TableHead>
-                      <TableHead>Access</TableHead>
-                      <TableHead>Sign up</TableHead>
-                      <TableHead>Created On</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {users.map((user) => (
-                      <TableRow key={user.user_id}>
-                        <TableCell className="font-medium">{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>{user.brand_name || user.workspace || "—"}</TableCell>
-                        <TableCell>{getRoleBadge(user.role)}</TableCell>
-                        <TableCell>{getStatusBadge(user.status)}</TableCell>
-                        <TableCell>{getAccessBadge(user.is_active)}</TableCell>
-                        <TableCell>{getSignupMethodBadge(user.auth_provider)}</TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {formatDate(user.created_at)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleViewUser(user)}
-                            >
-                              <Eye className="h-4 w-4 mr-2" />
-                              View
-                            </Button>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button type="button" variant="ghost" size="sm">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent
-                                align="end"
-
-                              >
-                                <DropdownMenuItem
-                                  onSelect={() =>
-                                    handleAction(
-                                      user.is_active ? "deactivate" : "activate",
-                                      user
-                                    )
-                                  }
-                                >
-                                  {user.is_active ? "Deactivate" : "Activate"}
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onSelect={() => setForceLogoutUser(user)}>
-                                  <LogOut className="h-4 w-4 mr-2" />
-                                  Force logout
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onSelect={() => setForceLogoutBrandUser(user)}
-                                  disabled={!user.brand_name && !user.workspace}
-                                >
-                                  <LogOut className="h-4 w-4 mr-2" />
-                                  Force logout all (this brand)
-                                </DropdownMenuItem>
-
-                                {(!user.auth_provider || user.auth_provider === "email") && (
-                                  <DropdownMenuItem onSelect={() => setForcePasswordUser(user)}>
-                                    <KeyRound className="h-4 w-4 mr-2" />
-                                    Force password reset
-                                  </DropdownMenuItem>
-                                )}
-                                <DropdownMenuItem
-                                  onSelect={() => {
-                                    const bid = user.brand_id || brandsList.find(
-                                      (b) => (b.brand_name || "").trim().toLowerCase() === (user.brand_name || user.workspace || "").trim().toLowerCase()
-                                    )?.brand_id;
-                                    if (!bid) {
-                                      toastError("Could not determine brand for this user.");
-                                      return;
-                                    }
-                                    setAddUserToBrandForBrand({
-                                      brandId: typeof bid === "string" ? bid : String(bid),
-                                      brandName: user.brand_name || user.workspace || "N/A",
-                                    });
-                                  }}
-                                >
-                                  <UserPlus className="h-4 w-4 mr-2" />
-                                  Add user to this brand
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onSelect={() => {
-                                    const brandId = user.brand_id || brandsList.find(
-                                      (b) => (b.brand_name || "").trim().toLowerCase() === (user.brand_name || user.workspace || "").trim().toLowerCase()
-                                    )?.brand_id;
-                                    if (!brandId) {
-                                      toastError("Could not determine brand for this user.");
-                                      return;
-                                    }
-                                    setTransferDialogBrand({
-                                      brandId: typeof brandId === "string" ? brandId : String(brandId),
-                                      brandName: user.brand_name || user.workspace || "N/A",
-                                    });
-                                    setIsTransferDialogOpen(true);
-                                  }}
-                                >
-                                  <ArrowRightLeft className="h-4 w-4 mr-2" />
-                                  Transfer Brand Admin
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              <UsersTable
+                users={users}
+                brandsList={brandsList}
+                handleViewUser={handleViewUser}
+                handleAction={handleAction}
+                setForceLogoutUser={setForceLogoutUser}
+                setForceLogoutBrandUser={setForceLogoutBrandUser}
+                setForcePasswordUser={setForcePasswordUser}
+                setAddUserToBrandForBrand={setAddUserToBrandForBrand}
+                setTransferDialogBrand={setTransferDialogBrand}
+                setIsTransferDialogOpen={setIsTransferDialogOpen}
+                getRoleBadge={getRoleBadge}
+                getStatusBadge={getStatusBadge}
+                getAccessBadge={getAccessBadge}
+                getSignupMethodBadge={getSignupMethodBadge}
+                formatDate={formatDate}
+              />
 
               {/* Pagination */}
               {totalPages > 1 && (
@@ -933,43 +830,11 @@ export default function UserManagement() {
             </div>
           ) : (
             <>
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Full Name</TableHead>
-                      <TableHead>Work Email</TableHead>
-                      <TableHead>Brand Name</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Invited On</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {invitedBrandAdmins.map((invite) => {
-                      const fullName = invite.first_name && invite.last_name
-                        ? `${invite.first_name} ${invite.last_name}`
-                        : invite.first_name || invite.last_name || "—";
-                      return (
-                        <TableRow key={invite.invite_id || invite.email}>
-                          <TableCell className="font-medium">{fullName}</TableCell>
-                          <TableCell>{invite.email}</TableCell>
-                          <TableCell>{invite.brand_name || "—"}</TableCell>
-                          <TableCell>{getRoleBadge(invite.role)}</TableCell>
-                          <TableCell className="text-sm text-muted-foreground">
-                            {formatDate(invite.created_at)}
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
-                              Pending
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
+              <InvitedUsersTable
+                invitedUsers={invitedBrandAdmins}
+                getRoleBadge={getRoleBadge}
+                formatDateOnly={formatDate}
+              />
 
               {/* Pagination */}
               {Math.ceil(invitedBrandAdminsTotal / invitedBrandAdminsPageSize) > 1 && (

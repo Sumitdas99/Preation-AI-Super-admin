@@ -7,6 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./context/store";
 import routers from "./routers";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,11 +26,13 @@ const App = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <RouterProvider router={routers} />
-        </TooltipProvider>
+        <ThemeProvider defaultTheme="light" storageKey="aegis-theme" attribute="class">
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <RouterProvider router={routers} />
+          </TooltipProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </PersistGate>
   </Provider>

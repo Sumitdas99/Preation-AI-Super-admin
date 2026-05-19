@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { PanelLeft } from "lucide-react";
+import { AlignLeft, PanelLeft } from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -226,14 +226,23 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
         data-sidebar="trigger"
         variant="ghost"
         size="icon"
-        className={cn("h-7 w-7", className)}
+        className={cn(
+          // Adjusted size and made it perfectly round for a cleaner look
+          "h-8 w-8 rounded-full",
+          // Twitter blue text with a 10% opacity Twitter blue background on hover
+          "text-[#1DA1F2] bg-[#1DA1F2]/10 hover:text-[#1DA1F2]",
+          // Smooth transitions and a satisfying "press" effect
+          "transition-all duration-200 ease-in-out active:scale-95",
+          className
+        )}
         onClick={(event) => {
           onClick?.(event);
           toggleSidebar();
         }}
         {...props}
       >
-        <PanelLeft />
+        {/* Removed text-blue-100 so it inherits the Twitter blue from the parent */}
+        <AlignLeft className="h-5 w-5" />
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
     );

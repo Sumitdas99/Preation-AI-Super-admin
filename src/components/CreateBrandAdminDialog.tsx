@@ -225,15 +225,16 @@ export function CreateBrandAdminDialog({
   );
 
   const dialogContent = (
-    <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-      <DialogHeader>
+    <DialogContent className="max-w-lg max-h-[90vh] p-0 flex flex-col gap-0 overflow-hidden">
+      <DialogHeader className="px-6 pt-6 pb-2">
         <DialogTitle>Create Brand & Invite Brand Admin</DialogTitle>
         <DialogDescription>
           Create a new brand and send an invite email to the Brand Admin. They will receive their login details (invite link and temporary password) by email.
         </DialogDescription>
       </DialogHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleCreateBrandAdminInvite)} className="space-y-4 py-4">
+      <div className="flex-1 overflow-y-auto px-6 pb-6 w-full">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleCreateBrandAdminInvite)} className="space-y-4 py-2 px-1">
           <FormField
             control={form.control}
             name="brand_name"
@@ -446,6 +447,7 @@ export function CreateBrandAdminDialog({
           </DialogFooter>
         </form>
       </Form>
+      </div>
     </DialogContent>
   );
 
