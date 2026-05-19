@@ -24,7 +24,7 @@ export function SectionHeading({
       className={cn(
         "flex items-center gap-3 border-b px-6 py-3.5",
         isDark
-          ? "border-white/10 bg-white/[0.04]"
+          ? "border-white/10 bg-white/4"
           : "border-border bg-accent/30",
         className,
       )}

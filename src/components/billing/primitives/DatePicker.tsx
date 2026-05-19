@@ -50,7 +50,7 @@ export function DatePicker({
           disabled={disabled}
           onBlur={onBlur}
           className={cn(
-            "flex h-10 w-full items-center rounded-md border border-slate-300 bg-white px-3 text-left text-sm font-semibold shadow-none transition-colors focus:border-2 focus:border-[#0A1F44] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-10 w-full items-center rounded-md border border-slate-300 bg-white px-3 text-left text-sm font-semibold shadow-none transition-colors focus:border-2 focus:border-[#0A1F44] focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
             selected ? "text-slate-800" : "text-slate-400 font-normal",
             className,
           )}

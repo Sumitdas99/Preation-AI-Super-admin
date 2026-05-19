@@ -137,7 +137,7 @@ export default function Dashboard() {
               </CardTitle>
               <div
                 className={`kpi-icon-hover flex h-11 w-11 items-center justify-center rounded-full
-    bg-white/15 backdrop-blur-sm
+    bg-white/15 backdrop-blur-xs
         `}
               >
                 <kpi.icon className="h-5 w-5 text-white" />

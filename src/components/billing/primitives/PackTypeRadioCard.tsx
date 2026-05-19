@@ -24,7 +24,7 @@ export function PackTypeRadioCard({
       aria-checked={selected}
       onClick={() => onSelect(packType)}
       className={cn(
-        "group flex h-full w-full flex-col gap-2 rounded-lg p-4 text-left transition outline-none",
+        "group flex h-full w-full flex-col gap-2 rounded-lg p-4 text-left transition outline-hidden",
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         selected
           ? "bg-[#0A1F44] text-white"

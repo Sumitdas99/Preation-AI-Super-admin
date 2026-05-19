@@ -1,10 +1,11 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
-import { Sidebar } from "./Sidebar";
+import { AppSidebar } from "../app-sidebar";
 import { Header } from "./Header";
 import { selectIsAuthenticated } from "@/context/slice/authSlice";
 import { getProfile } from "@/api/auth";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
 export function AppLayout() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -50,14 +51,22 @@ export function AppLayout() {
   }
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
-      <Sidebar />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <Header />
-        <main className="flex-1 overflow-y-auto">
-          <Outlet />
-        </main>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "16rem",
+        } as React.CSSProperties
+      }
+    >
+      <div className="flex h-screen w-full overflow-hidden bg-background">
+        <AppSidebar />
+        <SidebarInset className="flex flex-1 flex-col overflow-hidden md:my-2 md:mr-2 md:rounded-xl md:border md:shadow-xs bg-card">
+          <Header />
+          <main className="flex-1 overflow-y-auto">
+            <Outlet />
+          </main>
+        </SidebarInset>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }

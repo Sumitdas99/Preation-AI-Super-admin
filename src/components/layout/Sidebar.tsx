@@ -48,14 +48,14 @@ export function Sidebar() {
             to={item.href}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus:outline-0",
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-hidden focus:outline-0",
                 isActive
-                  ? "bg-[linear-gradient(135deg,_hsl(217_91%_24%)_0%,_hsl(217_91%_32%)_100%)] text-white font-bold"
-                  : "text-[#454545] hover:bg-[var(--hover-sidebar)]"
+                  ? "bg-[linear-gradient(135deg,hsl(217_91%_24%)_0%,hsl(217_91%_32%)_100%)] text-white font-bold"
+                  : "text-[#454545] hover:bg-(--hover-sidebar)"
               )
             }
           >
-            <item.icon className="h-5 w-5 flex-shrink-0" />
+            <item.icon className="h-5 w-5 shrink-0" />
             <span className="flex-1">{item.name}</span>
           </NavLink>
         ))}

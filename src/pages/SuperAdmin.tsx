@@ -228,7 +228,7 @@ export default function SuperAdmin() {
                 <TableRow key={alert.id}>
                   <TableCell>
                     <Badge
-                      variant={alert.severity === "critical" ? "destructive" : "outline"}
+                      variant={alert.severity === "critical" ? "destructive" : "outline-solid"}
                       className={alert.severity === "critical" ? "status-block" : "status-flag"}
                     >
                       {alert.severity}

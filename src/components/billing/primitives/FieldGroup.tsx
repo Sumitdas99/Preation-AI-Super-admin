@@ -77,7 +77,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       <Input
         ref={ref}
         className={cn(
-          "h-10 rounded-md text-sm shadow-none focus:border-2 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0",
+          "h-10 rounded-md text-sm shadow-none focus:border-2 focus:outline-hidden focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0",
           isDark
             ? "border-white/15 bg-white/5 text-white placeholder:text-white/40 focus:border-[#E8943A]"
             : "border-slate-300 bg-white text-slate-900 placeholder:text-slate-300 placeholder:italic focus:border-[#0A1F44]",

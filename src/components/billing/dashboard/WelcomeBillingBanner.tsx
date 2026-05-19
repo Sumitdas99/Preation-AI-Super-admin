@@ -29,8 +29,8 @@ export function WelcomeBillingBanner({
   const isPayment = tone === "welcome-payment-required";
 
   const containerClass = isPayment
-    ? "bg-gradient-to-br from-[#1B3268] to-[#3B5BA5] text-white"
-    : "bg-[linear-gradient(105deg,_#6B4214,_#C48527)] text-white";
+    ? "bg-linear-to-br from-[#1B3268] to-[#3B5BA5] text-white"
+    : "bg-[linear-gradient(105deg,#6B4214,#C48527)] text-white";
 
   const Icon = isPayment ? CreditCard : CheckCircle2;
   const title = isPayment

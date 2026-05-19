@@ -26,7 +26,7 @@ export function BillingPackGrid({ cells, className }: BillingPackGridProps) {
                 {cell.value}
               </span>
             ) : (
-              <span className="block break-words font-sans text-sm font-semibold text-slate-800">
+              <span className="block wrap-break-word font-sans text-sm font-semibold text-slate-800">
                 {cell.value}
               </span>
             )}

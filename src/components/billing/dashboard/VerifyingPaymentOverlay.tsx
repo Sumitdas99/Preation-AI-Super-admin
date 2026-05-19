@@ -11,7 +11,7 @@ export function VerifyingPaymentOverlay({ visible }: VerifyingPaymentOverlayProp
     <div
       role="status"
       aria-live="polite"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-xs"
     >
       <div className="mx-4 flex max-w-sm flex-col items-center gap-3 rounded-xl border border-slate-200 bg-white p-6 text-center shadow-2xl">
         <Loader2 className="h-6 w-6 animate-spin text-[#0A1F44]" aria-hidden />

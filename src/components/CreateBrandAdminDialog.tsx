@@ -137,7 +137,7 @@ export interface CreateBrandAdminDialogProps {
   /** Called when dialog open state changes (use when controlled). */
   onOpenChange?: (open: boolean) => void;
   /** Button variant when using default trigger. */
-  variant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive";
+  variant?: "default" | "outline-solid" | "secondary" | "ghost" | "link" | "destructive";
   /** Show default "Create Brand Admin" trigger button. Ignored if trigger is provided. */
   defaultTrigger?: boolean;
   /** Called when brand admin is successfully created and invited. */

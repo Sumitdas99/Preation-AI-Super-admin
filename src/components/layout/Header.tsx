@@ -2,6 +2,7 @@ import { ChevronDown } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +46,7 @@ export function Header() {
 
   return (
     <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6">
+      <SidebarTrigger className="-ml-1 mr-2" />
       <div className="flex-1" />
       <div className="flex items-center gap-4">
         <DropdownMenu>

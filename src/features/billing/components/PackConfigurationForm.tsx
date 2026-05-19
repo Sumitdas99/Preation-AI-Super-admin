@@ -20,7 +20,7 @@ import { toPackSummary } from "../adapters/toPackSummary";
 
 type ActionVariant =
   | "default"
-  | "outline"
+  | "outline-solid"
   | "secondary"
   | "ghost"
   | "destructive";
@@ -62,7 +62,7 @@ export function PackConfigurationForm({
   onPrimarySubmit,
   primaryDisabled,
   secondaryLabel,
-  secondaryVariant = "outline",
+  secondaryVariant = "outline-solid",
   onSecondarySubmit,
   secondaryDisabled,
   ghostLabel,

@@ -56,7 +56,7 @@ export function BrandListPanel({
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               placeholder="Search brands..."
-              className="h-9 rounded-md border border-slate-200 bg-white pl-9 text-sm shadow-none placeholder:text-muted-foreground/50 focus:border-2 focus:border-[#0A1F44] focus:outline-none focus:ring-0 focus:placeholder:text-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-9 rounded-md border border-slate-200 bg-white pl-9 text-sm shadow-none placeholder:text-muted-foreground/50 focus:border-2 focus:border-[#0A1F44] focus:outline-hidden focus:ring-0 focus:placeholder:text-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               aria-label="Search brands"
             />
           </div>

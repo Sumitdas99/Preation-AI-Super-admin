@@ -141,7 +141,7 @@ export default function BrandAdminRequests() {
             <input
               type="text"
               placeholder="Search by brand name, brand admin name, or work email..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-primary transition-all text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -149,7 +149,7 @@ export default function BrandAdminRequests() {
           <div className="flex items-center gap-2 w-full md:w-auto">
             <div className="relative w-full md:w-48">
               <select
-                className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer text-sm"
+                className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg appearance-none bg-white focus:outline-hidden focus:ring-2 focus:ring-primary cursor-pointer text-sm"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -260,7 +260,7 @@ export default function BrandAdminRequests() {
               <Separator />
               {selectedRequest.status === "pending" && (
                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
-                  <ShieldAlert className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <ShieldAlert className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
                   <div>
                     <h4 className="text-sm font-semibold text-amber-900">Security Notice</h4>
                     <p className="text-xs text-amber-800 mt-1">
@@ -273,7 +273,7 @@ export default function BrandAdminRequests() {
                 <div className="animate-in fade-in zoom-in duration-300">
                   <label className="text-sm font-medium text-gray-700 mb-1 block">Reason for Rejection *</label>
                   <textarea
-                    className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-red-500 outline-none"
+                    className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-red-500 outline-hidden"
                     rows={3}
                     placeholder="Please explain why this request is being rejected..."
                     value={rejectReason}

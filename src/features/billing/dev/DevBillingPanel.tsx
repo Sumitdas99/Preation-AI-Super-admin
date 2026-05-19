@@ -327,7 +327,7 @@ export function DevBillingPanel({
           <ChevronRight className="h-4 w-4" />
         </button>
 
-        <div className="ml-1 flex min-w-[5rem] flex-col border-l border-white/10 pl-3 leading-tight">
+        <div className="ml-1 flex min-w-20 flex-col border-l border-white/10 pl-3 leading-tight">
           <span className="text-[10px] uppercase tracking-wider text-white/50">
             State {activeGroup.key}
           </span>
@@ -417,7 +417,7 @@ export function DevBillingPanel({
         <ChevronRight className="h-4 w-4" />
       </button>
 
-      <div className="ml-1 flex min-w-[11rem] flex-col border-l border-white/10 pl-3 leading-tight">
+      <div className="ml-1 flex min-w-44 flex-col border-l border-white/10 pl-3 leading-tight">
         <span className="text-[10px] uppercase tracking-wider text-white/50">
           Billing · {index + 1} / {total}
         </span>

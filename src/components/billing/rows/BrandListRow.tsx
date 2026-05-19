@@ -16,7 +16,7 @@ export function BrandListRow({ row, selected, onSelect }: BrandListRowProps) {
       aria-current={selected}
       className={cn(
         "flex min-w-0 flex-1 items-start border-b px-6 py-4 text-left text-sm transition-colors",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0A1F44]",
+        "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0A1F44]",
         selected
           ? "bg-blue-50/70 text-[#0A1F44]"
           : "text-muted-foreground hover:bg-muted/50",

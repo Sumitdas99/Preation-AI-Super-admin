@@ -56,8 +56,8 @@ function ReadField({ label, value, className, multiline }: ReadFieldProps) {
         {label}
       </dt>
       <dd className={cn(
-        "break-words text-[14px] font-semibold text-slate-900 border border-emerald-100 bg-[#f4fbf7]/45 rounded-md px-4 py-2.5",
-        multiline ? "min-h-[4.5rem]" : "h-10 flex items-center"
+        "wrap-break-word text-[14px] font-semibold text-slate-900 border border-emerald-100 bg-[#f4fbf7]/45 rounded-md px-4 py-2.5",
+        multiline ? "min-h-18" : "h-10 flex items-center"
       )}>
         {value || "—"}
       </dd>

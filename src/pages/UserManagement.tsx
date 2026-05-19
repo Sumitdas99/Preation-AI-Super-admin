@@ -475,7 +475,7 @@ export default function UserManagement() {
       {/* Global loader overlay when any 3-dot action is in progress */}
       {globalActionLoading && (
         <div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-3 bg-background/80 backdrop-blur-sm"
+          className="fixed inset-0 z-100 flex flex-col items-center justify-center gap-3 bg-background/80 backdrop-blur-xs"
           aria-live="polite"
           aria-busy="true"
         >
