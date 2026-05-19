@@ -83,7 +83,7 @@ export function updateBrandPack(
 ): Promise<UpdateBrandPackResponse> {
   UpdateBrandPackRequest.parse(payload);
   return request(`${ADMIN_BASE}/brands/${encodeURIComponent(brandId)}/pack`, {
-    method: "PATCH",
+    method: "POST",
     body: payload,
     schema: UpdateBrandPackResponse,
     headers: billingHeaders(scenario),

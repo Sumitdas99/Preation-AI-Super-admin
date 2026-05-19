@@ -15,6 +15,8 @@ export function toBrandListData(brands: BrandSummary[]): BrandSummaryRow[] {
     trialExpiresLabel: brand.trial_end
       ? `Trial expires ${formatDate(brand.trial_end)}`
       : undefined,
+    country: brand.country,
+    email: brand.business_contact_email,
   }));
 }
 

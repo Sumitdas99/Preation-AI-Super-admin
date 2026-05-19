@@ -5,7 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { createBillingBrand } from "@/api/endpoints/billing";
+import {
+  createBillingBrand,
+  updateBrandPack,
+  sendBrandInvitation,
+} from "@/api/endpoints/billing";
+import { useBillingScenario } from "@/api/billingScenario";
 import { Button } from "@/components/ui/button";
 import {
   BrandDetailsForm,
@@ -50,6 +55,7 @@ export default function SuperAdminBrandPackOnboard() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const createMutation = useCreateBrand();
+  const scenario = useBillingScenario();
 
   useEffect(() => {
     document.title = "Onboard new brand · Praetion AI";
@@ -62,6 +68,7 @@ export default function SuperAdminBrandPackOnboard() {
   });
 
   const [brandDetails, setBrandDetails] = useState<BrandDetailsFormValues | null>(null);
+  const [createdBrandId, setCreatedBrandId] = useState<string | null>(null);
   const [packDraft, setPackDraft] = useState<PackConfigFormValues>(
     packConfigFormDefaults,
   );
@@ -92,8 +99,11 @@ export default function SuperAdminBrandPackOnboard() {
         address: values.registered_address,
       };
 
-      await billingBrandMutation.mutateAsync(payload);
+      const res = await billingBrandMutation.mutateAsync(payload);
       setBrandDetails(values);
+      if (res && res.brand_id) {
+        setCreatedBrandId(res.brand_id);
+      }
       navigate("?step=pack");
     } catch (error) {
       // Error handling is managed by onError inside useMutation
@@ -111,6 +121,32 @@ export default function SuperAdminBrandPackOnboard() {
     if (!brandDetails) return;
     setPackDraft(values);
     const packPayload = fromPackFormValues(values) as Omit<BrandPack, "brand_id">;
+
+    if (createdBrandId) {
+      try {
+        await updateBrandPack(createdBrandId, packPayload, scenario);
+        if (sendInvitation) {
+          await sendBrandInvitation({ brand_id: createdBrandId }, scenario);
+        }
+        toast.success(
+          sendInvitation
+            ? "Brand onboarded — invitation email sent"
+            : "Brand saved — configure later"
+        );
+        if (sendInvitation) {
+          navigate(`/super-admin/brand-packs/${createdBrandId}`, { replace: true });
+        } else {
+          navigate("/super-admin/brand-packs", { replace: true });
+        }
+      } catch (error) {
+        console.error("Failed to update brand pack:", error);
+        toast.error("Could not save pack changes", {
+          description: error instanceof Error ? error.message : "Network error occurred",
+        });
+      }
+      return;
+    }
+
     const payload: CreateBrandRequest = {
       brand_name: brandDetails.brand_name,
       contact: {

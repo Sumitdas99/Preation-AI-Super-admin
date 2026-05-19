@@ -39,6 +39,11 @@ function buildHeaders(
     headers.Authorization = `Bearer ${token}`;
   }
 
+  // Strip mock/scenario headers to avoid CORS preflight errors with the real backend
+  delete headers["x-mock-scenario"];
+  delete headers["x-legal-scenario"];
+  delete headers["x-billing-scenario"];
+
   return headers;
 }
 

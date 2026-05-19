@@ -1,17 +1,23 @@
 import { z } from "zod";
 
-export const PackType = z.union([
-  z.literal("TRIAL"),
-  z.literal("ENTERPRISE"),
-  z.literal("STANDARD"),
-]);
+export const PackType = z.preprocess(
+  (val) => (typeof val === "string" ? val.toUpperCase() : val),
+  z.union([
+    z.literal("TRIAL"),
+    z.literal("ENTERPRISE"),
+    z.literal("STANDARD"),
+  ])
+);
 export type PackType = z.infer<typeof PackType>;
 
-export const OverrideType = z.union([
-  z.literal("TRIAL_OVERRIDE"),
-  z.literal("ENTERPRISE_OVERRIDE"),
-  z.literal("STANDARD"),
-]);
+export const OverrideType = z.preprocess(
+  (val) => (typeof val === "string" ? val.toUpperCase() : val),
+  z.union([
+    z.literal("TRIAL_OVERRIDE"),
+    z.literal("ENTERPRISE_OVERRIDE"),
+    z.literal("STANDARD"),
+  ])
+);
 export type OverrideType = z.infer<typeof OverrideType>;
 
 export const SubscriptionStatus = z.union([
@@ -55,26 +61,56 @@ export type Money = z.infer<typeof Money>;
 
 export const BrandPack = z
   .object({
-    brand_id: z.string(),
-    pack_type: PackType,
-    override_type: OverrideType.optional(),
-    custom_price: z.number().nonnegative().optional(),
-    override_reason: z.string().optional(),
-    custom_image_limit: z.number().int().nonnegative().optional(),
-    custom_video_limit: z.number().int().nonnegative().optional(),
-    overage_image_price: z.number().nonnegative().optional(),
-    overage_video_price: z.number().nonnegative().optional(),
-    trial_image_limit: z.number().int().nonnegative().optional(),
-    trial_video_limit: z.number().int().nonnegative().optional(),
-    trial_end: z.string().optional(),
-    override_expiry_date: z.string().optional(),
-    first_charge_date: z.string().optional(),
-    monthly_price: z.number().nonnegative().optional(),
-    image_scan_limit: z.number().int().nonnegative().optional(),
-    video_minutes_limit: z.number().int().nonnegative().optional(),
+    brand_id: z.string().optional(),
+    pack_type: PackType.optional().default("STANDARD"),
+    override_type: OverrideType.nullable().optional(),
+    custom_price: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().nonnegative().nullable().optional()),
+    override_reason: z.string().nullable().optional(),
+    custom_image_limit: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().int().nonnegative().nullable().optional()),
+    custom_video_limit: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().int().nonnegative().nullable().optional()),
+    overage_image_price: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().nonnegative().nullable().optional()),
+    overage_video_price: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().nonnegative().nullable().optional()),
+    trial_image_limit: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().int().nonnegative().nullable().optional()),
+    trial_video_limit: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().int().nonnegative().nullable().optional()),
+    trial_end: z.string().nullable().optional(),
+    override_expiry_date: z.string().nullable().optional(),
+    first_charge_date: z.string().nullable().optional(),
+    monthly_price: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().nonnegative().nullable().optional()),
+    image_scan_limit: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().int().nonnegative().nullable().optional()),
+    video_minutes_limit: z.preprocess((val) => {
+      if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
+      return val;
+    }, z.number().int().nonnegative().nullable().optional()),
     currency: Currency.default("EUR"),
-    status: PackConfigStatus.optional(),
-    updated_at: z.string().optional(),
+    status: PackConfigStatus.nullable().optional(),
+    updated_at: z.string().nullable().optional(),
   })
   .passthrough();
 export type BrandPack = z.infer<typeof BrandPack>;
@@ -103,6 +139,10 @@ export const BrandSummary = z
     cycle_end: z.string().optional(),
     last_payment_failure_at: z.string().optional(),
     badge_labels: z.array(z.string()).default([]),
+    country: z.string().optional(),
+    business_contact_email: z.string().optional(),
+    address: z.string().optional(),
+    created_at: z.string().optional(),
   })
   .passthrough();
 export type BrandSummary = z.infer<typeof BrandSummary>;
@@ -119,11 +159,21 @@ export const BrandDetail = BrandSummary.merge(
 export type BrandDetail = z.infer<typeof BrandDetail>;
 
 export const BrandListResponse = z
-  .object({
-    items: z.array(BrandSummary).default([]),
-    total_count: z.number().int().nonnegative().optional(),
-  })
-  .passthrough();
+  .preprocess(
+    (val) => {
+      if (Array.isArray(val)) {
+        return {
+          items: val,
+          total_count: val.length,
+        };
+      }
+      return val;
+    },
+    z.object({
+      items: z.array(BrandSummary).default([]),
+      total_count: z.number().int().nonnegative().optional(),
+    }).passthrough(),
+  );
 export type BrandListResponse = z.infer<typeof BrandListResponse>;
 
 export const CreateBrandRequest = z.object({

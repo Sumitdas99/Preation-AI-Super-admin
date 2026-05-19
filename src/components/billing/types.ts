@@ -28,6 +28,8 @@ export interface BrandSummaryRow {
   subscriptionStatus?: SubscriptionStatus;
   badges: SubscriptionBadge[];
   trialExpiresLabel?: string;
+  country?: string;
+  email?: string;
 }
 
 export interface UsageMeterVM {
