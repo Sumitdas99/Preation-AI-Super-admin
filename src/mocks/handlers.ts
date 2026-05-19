@@ -94,32 +94,28 @@ import {
   updateApprovalState,
 } from "./state";
 
-function scenarioFromRequest(request: Request) {
-  return resolveScenario(request.headers.get("x-mock-scenario"));
+function scenarioFromRequest() {
+  return resolveScenario(null);
 }
 
-function consentScenarioFromRequest(request: Request) {
-  return resolveConsentScenario(request.headers.get("x-consent-scenario"));
+function consentScenarioFromRequest() {
+  return resolveConsentScenario(null);
 }
 
-function suitabilityScenarioFromRequest(request: Request) {
-  return resolveSuitabilityScenario(
-    request.headers.get("x-suitability-scenario"),
-  );
+function suitabilityScenarioFromRequest() {
+  return resolveSuitabilityScenario(null);
 }
 
-function policyThresholdsScenarioFromRequest(request: Request) {
-  return resolvePolicyThresholdsScenario(
-    request.headers.get("x-policy-thresholds-scenario"),
-  );
+function policyThresholdsScenarioFromRequest() {
+  return resolvePolicyThresholdsScenario(null);
 }
 
-function legalScenarioFromRequest(request: Request) {
-  return resolveLegalScenario(request.headers.get("x-legal-scenario"));
+function legalScenarioFromRequest() {
+  return resolveLegalScenario(null);
 }
 
-function billingScenarioFromRequest(request: Request) {
-  return resolveBillingScenario(request.headers.get("x-billing-scenario"));
+function billingScenarioFromRequest() {
+  return resolveBillingScenario(null);
 }
 
 export const handlers = [
@@ -127,11 +123,11 @@ export const handlers = [
     const runId = String((params as PathParams).runId);
     const legalFixture = getLegalFixtureByRunId(runId);
     if (legalFixture) {
-      const overrideId = legalScenarioFromRequest(request);
+      const overrideId = legalScenarioFromRequest();
       const fixture = getLegalFixture(overrideId);
       return HttpResponse.json({ ...fixture.preflight, preflight_run_id: runId });
     }
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     const payload: PreflightStatusResponse = preflightScenarios[scenario];
     return HttpResponse.json(payload);
   }),
@@ -142,7 +138,7 @@ export const handlers = [
   }),
 
   http.post("/api/v1/preflight/:runId/rerun", ({ request }) => {
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     if (scenario === "system-error") {
       applyTransition("in-progress");
     }
@@ -153,7 +149,7 @@ export const handlers = [
     const assetId = String((params as PathParams).assetId);
     const legalAsset = getLegalAsset(assetId);
     if (legalAsset) return HttpResponse.json(legalAsset);
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     return HttpResponse.json(assetScenarios[scenario]);
   }),
 
@@ -173,7 +169,7 @@ export const handlers = [
     const specId = String((params as PathParams).specId);
     const legalDisc = getLegalDisclosure(specId);
     if (legalDisc) return HttpResponse.json(legalDisc);
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     const draft = getDisclosureDraft(scenario);
     const spec = draft ?? disclosureScenarios[scenario];
     if (!spec) {
@@ -186,7 +182,7 @@ export const handlers = [
   }),
 
   http.post("/api/v1/disclosure/:specId/spec", async ({ request }) => {
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     const body = (await request.json()) as UpdateDisclosureSpecRequest;
     const next = mergeDisclosureForm(scenario, body);
     if (!next) {
@@ -202,7 +198,7 @@ export const handlers = [
   }),
 
   http.post("/api/v1/disclosure/:specId/lock", ({ request }) => {
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     const locked = lockDisclosureDraft(scenario);
     if (!locked) {
       return HttpResponse.json(
@@ -282,7 +278,7 @@ export const handlers = [
 
   http.post("/api/v1/c2pa/:assetId/embed", ({ request, params }) => {
     markC2paEmbedding();
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     if (scenario !== "allow" && scenario !== "allow-with-warnings") {
       applyTransition("in-progress");
     }
@@ -296,7 +292,7 @@ export const handlers = [
   }),
 
   http.post("/api/v1/evidence/generate", async ({ request }) => {
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     if (scenario !== "allow" && scenario !== "allow-with-warnings") {
       return HttpResponse.json(
         {
@@ -413,7 +409,7 @@ export const handlers = [
     if (runIdFilter) {
       const legalFixture = getLegalFixtureByRunId(runIdFilter);
       if (legalFixture) {
-        const overrideId = legalScenarioFromRequest(request);
+        const overrideId = legalScenarioFromRequest();
         const fixture = getLegalFixture(overrideId);
         const approvalForRun: ApprovalDetail = {
           ...fixture.approval,
@@ -471,7 +467,7 @@ export const handlers = [
   }),
 
   http.get("/api/v1/proof/:specId", ({ request }) => {
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     const spec = getProofDraft(scenario);
     if (!spec) {
       return HttpResponse.json(
@@ -483,7 +479,7 @@ export const handlers = [
   }),
 
   http.post("/api/v1/proof/:specId/submit", async ({ request }) => {
-    const scenario = scenarioFromRequest(request);
+    const scenario = scenarioFromRequest();
     const body = (await request.json()) as SubmitProofPayload;
     const next = applyProofSubmission(scenario, body);
     if (!next) {
@@ -501,12 +497,12 @@ export const handlers = [
   }),
 
   http.get("/api/v1/consent/:specId", ({ request }) => {
-    const scenario = consentScenarioFromRequest(request);
+    const scenario = consentScenarioFromRequest();
     return HttpResponse.json(getConsentDraft(scenario));
   }),
 
   http.get("/api/v1/workspaces/:workspaceId/settings", ({ request }) => {
-    const scenario = policyThresholdsScenarioFromRequest(request);
+    const scenario = policyThresholdsScenarioFromRequest();
     if (scenario === "reviewer-forbidden") {
       return HttpResponse.json(
         {
@@ -522,7 +518,7 @@ export const handlers = [
   http.patch(
     "/api/v1/workspaces/:workspaceId/settings",
     async ({ request }) => {
-      const scenario = policyThresholdsScenarioFromRequest(request);
+      const scenario = policyThresholdsScenarioFromRequest();
       if (scenario === "reviewer-forbidden") {
         return HttpResponse.json(
           {
@@ -557,7 +553,7 @@ export const handlers = [
   ),
 
   http.get("/api/v1/workspaces/:workspaceId/provenance-summary", ({ request }) => {
-    const scenario = policyThresholdsScenarioFromRequest(request);
+    const scenario = policyThresholdsScenarioFromRequest();
     if (scenario === "reviewer-forbidden") {
       return HttpResponse.json(
         {
@@ -571,7 +567,7 @@ export const handlers = [
   }),
 
   http.post("/api/v1/consent/:specId/rpl", async ({ request }) => {
-    const scenario = consentScenarioFromRequest(request);
+    const scenario = consentScenarioFromRequest();
     const body = (await request.json()) as RplSubmission;
     const next = applyRplSubmission(scenario, body);
     if (!next) {
@@ -589,7 +585,7 @@ export const handlers = [
   http.post(
     "/api/v1/consent/:specId/human-presence",
     async ({ request }) => {
-      const scenario = consentScenarioFromRequest(request);
+      const scenario = consentScenarioFromRequest();
       const body = (await request.json()) as HumanPresenceSubmission;
       const next = applyHumanPresenceSubmission(scenario, body);
       if (!next) {
@@ -606,14 +602,14 @@ export const handlers = [
   ),
 
   http.get("/api/v1/suitability/:runId/results", ({ request }) => {
-    const scenario = suitabilityScenarioFromRequest(request);
+    const scenario = suitabilityScenarioFromRequest();
     return HttpResponse.json(getSuitabilityDraft(scenario));
   }),
 
   http.post(
     "/api/v1/suitability/:runId/accept-flagged",
     async ({ request }) => {
-      const scenario = suitabilityScenarioFromRequest(request);
+      const scenario = suitabilityScenarioFromRequest();
       const body = (await request.json()) as AcceptFlaggedRequest;
       const next = applySuitabilityAcceptFlagged(scenario, body);
       if (!next) {
@@ -631,7 +627,7 @@ export const handlers = [
   ),
 
   http.post("/api/v1/suitability/:runId/withdraw", async ({ request }) => {
-    const scenario = suitabilityScenarioFromRequest(request);
+    const scenario = suitabilityScenarioFromRequest();
     const body = (await request.json().catch(() => ({}))) as WithdrawRequest;
     const next = applySuitabilityWithdraw(scenario, body ?? {});
     return HttpResponse.json(next);
@@ -712,7 +708,7 @@ export const handlers = [
     "/api/v1/billing/admin/brands/:brandId/overage-preview",
     ({ request, params }) => {
       const brandId = String((params as PathParams).brandId);
-      const scenario = billingScenarioFromRequest(request);
+      const scenario = billingScenarioFromRequest();
       const fixture = billingScenarios[scenario];
       if (fixture.activeBrandId !== brandId) {
         return HttpResponse.json({ ...fixture.usage, brand_id: brandId, applies: false });
@@ -736,14 +732,14 @@ export const handlers = [
 
   http.get("/api/v1/billing/usage/:brandId", ({ request, params }) => {
     const brandId = String((params as PathParams).brandId);
-    const scenario = billingScenarioFromRequest(request);
+    const scenario = billingScenarioFromRequest();
     const fixture = billingScenarios[scenario];
     return HttpResponse.json({ ...fixture.usage, brand_id: brandId });
   }),
 
   http.get("/api/v1/billing/payment-status/:brandId", ({ request, params }) => {
     const brandId = String((params as PathParams).brandId);
-    const scenario = billingScenarioFromRequest(request);
+    const scenario = billingScenarioFromRequest();
     const fixture = billingScenarios[scenario];
     return HttpResponse.json({ ...fixture.paymentStatus, brand_id: brandId });
   }),
@@ -758,7 +754,7 @@ export const handlers = [
   }),
 
   http.post("/api/v1/billing/activate", async ({ request }) => {
-    const scenario = billingScenarioFromRequest(request);
+    const scenario = billingScenarioFromRequest();
     const body = (await request.json()) as ActivateSubscriptionRequest;
     const fixture = billingScenarios[scenario];
     if (!fixture.paymentStatus.payment_configured) {

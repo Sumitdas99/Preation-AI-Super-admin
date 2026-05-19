@@ -1,8 +1,7 @@
 import { z, type ZodTypeAny } from "zod";
 import { API_BASE_URL, IS_DEV, USE_MSW } from "@/lib/env";
 import { fromStatus, NetworkError, SchemaError } from "./errors";
-import { getLegalScenario } from "./legalScenario";
-import { getMockScenario } from "./mockScenario";
+import { fromStatus, NetworkError, SchemaError } from "./errors";
 
 const BASE_URL = API_BASE_URL;
 
@@ -38,11 +37,6 @@ function buildHeaders(
     : null;
   if (token && !headers.Authorization) {
     headers.Authorization = `Bearer ${token}`;
-  }
-
-  if (USE_MSW) {
-    headers["x-mock-scenario"] = getMockScenario();
-    headers["x-legal-scenario"] = getLegalScenario();
   }
 
   return headers;
@@ -89,7 +83,7 @@ export async function request<TSchema extends ZodTypeAny | undefined = undefined
             ? body
             : JSON.stringify(body),
       signal: combinedSignal,
-      credentials: "include",
+      credentials: "same-origin",
     });
   } catch (err) {
     if ((err as Error)?.name === "AbortError") {
