@@ -37,11 +37,40 @@ export function AdminTopBar({ title, breadcrumbs, rightSlot, onMenuClick }: Admi
         </button>
       ) : null}
 
+      <span className="shrink-0 whitespace-nowrap font-display text-lg font-semibold tracking-tight">
+        Praetion <span className="text-[#F5A623]">Admin</span>
+      </span>
 
+      <span className={SUPER_ADMIN_TAG}>Super Admin</span>
 
+      <span className="h-5 w-px shrink-0 bg-white/20" aria-hidden />
 
+      {breadcrumbs && breadcrumbs.length > 0 ? (
+        <nav aria-label="Breadcrumbs" className="min-w-0 flex-1 truncate text-sm font-medium text-white/95">
+          <ol className="flex items-center gap-2 overflow-hidden">
+            {breadcrumbs.map((seg, idx) => (
+              <Fragment key={idx}>
+                {idx > 0 && <span className="text-white/40 font-normal">→</span>}
+                <li className={cn(
+                  "truncate",
+                  idx === breadcrumbs.length - 1 ? "text-white font-semibold" : "text-white/60 font-normal"
+                )}>
+                  {seg.label}
+                </li>
+              </Fragment>
+            ))}
+          </ol>
+        </nav>
+      ) : (
+        <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">
+          {title}
+        </span>
+      )}
 
-
+      <div className="ml-auto flex shrink-0 items-center gap-2">
+        <span className={PILL}>Super Admin</span>
+        {rightSlot}
+      </div>
     </header>
   );
 }

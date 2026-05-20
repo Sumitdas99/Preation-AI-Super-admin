@@ -29,7 +29,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
-  DevBillingPanel,
+
   PackConfigurationForm,
   brandDetailsFormDefaults,
   brandDetailsFormSchema,
@@ -264,14 +264,14 @@ export default function SuperAdminBrandPackOnboard() {
             <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center animate-in zoom-in duration-500">
               <CheckCircle2 className="w-12 h-12 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">API call successfully completed</h2>
+            {/* <h2 className="text-2xl font-bold text-foreground">Brand pack configured and invitation sent.</h2> */}
             <p className="text-muted-foreground text-center max-w-md">
-              Brand pack configured and invitation sent. Redirecting back to brand packs...
+              Brand pack configured and invitation sent.
             </p>
           </div>
         ) : null}
       </div>
-      <DevBillingPanel />
+
     </div>
   );
 }

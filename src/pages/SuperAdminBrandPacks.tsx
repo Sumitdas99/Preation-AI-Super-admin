@@ -12,7 +12,7 @@ import {
   BrandPackEmptyState,
   BrandPackErrorScreen,
   BrandPackSkeleton,
-  DevBillingPanel,
+
   PackConfigurationForm,
   filterBrandList,
   toBrandListData,
@@ -201,8 +201,6 @@ export default function SuperAdminBrandPacks() {
                   }
                   primaryLabel="Save pack changes"
                   onPrimarySubmit={handleSave}
-                  ghostLabel="Discard changes"
-                  onGhost={handleDiscard}
                 />
               </div>
             </>
@@ -210,7 +208,7 @@ export default function SuperAdminBrandPacks() {
         </main>
       </div>
 
-      <DevBillingPanel />
+
     </div>
   );
 }

@@ -150,7 +150,7 @@ export function PackConfigurationForm({
               variant="ghost"
               onClick={onGhost}
               disabled={submitting}
-              className="h-11 shrink-0 border-0 bg-slate-100 font-semibold text-slate-800 hover:bg-slate-200"
+              className="h-11 shrink-0 border-0 bg-secondary font-semibold text-secondary-foreground hover:bg-secondary/80"
             >
               {ghostLabel}
             </Button>
@@ -174,7 +174,7 @@ export function PackConfigurationForm({
             variant={primaryVariant}
             disabled={submitting || primaryDisabled}
             data-pristine={!isDirty}
-            className="h-11 shrink-0 bg-[#0f1d3b] text-sm font-bold text-white hover:bg-[#1a2c52] focus-visible:ring-[#0f1d3b]"
+            className="h-11 shrink-0 bg-primary text-sm font-bold text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring"
           >
             {submitting ? "Saving…" : primaryLabel}
           </Button>
