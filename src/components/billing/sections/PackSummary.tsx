@@ -9,9 +9,9 @@ export function PackSummary({ brandName: _brandName, summary }: PackSummaryProps
   const hasTrial = summary.showTrial;
 
   return (
-    <section className="overflow-hidden rounded-lg border-[1.25px] border-slate-200 bg-card shadow-sm">
+    <section className="overflow-hidden rounded-lg border-[1.25px] border-border bg-card shadow-sm">
       <header className="border-b border-border bg-accent/30 px-6 py-3.5">
-        <h3 className="text-xl font-semibold leading-none text-slate-600">
+        <h3 className="text-xl font-semibold leading-none text-foreground">
           Pack summary
         </h3>
       </header>
@@ -19,7 +19,7 @@ export function PackSummary({ brandName: _brandName, summary }: PackSummaryProps
       {hasTrial ? (
         <div className="grid md:grid-cols-[1fr_1px_1fr]">
           <SummaryColumn title="Trial period" rows={summary.trialRows} />
-          <div className="hidden bg-slate-200/70 md:block" />
+          <div className="hidden bg-border md:block" />
           <SummaryColumn title="Committed monthly pack" rows={summary.committedRows} />
         </div>
       ) : (
@@ -38,11 +38,11 @@ function SummaryColumn({ title, rows }: SummaryColumnProps) {
   return (
     <div className="min-w-0">
       <div className="px-4 py-2.5">
-        <p className="text-xs font-extrabold uppercase tracking-wider text-slate-700">
+        <p className="text-xs font-extrabold uppercase tracking-wider text-foreground">
           {title}
         </p>
       </div>
-      <dl className="divide-y divide-slate-200/40">
+      <dl className="divide-y divide-border/40">
         {rows.map((row) => (
           <div
             key={row.label}

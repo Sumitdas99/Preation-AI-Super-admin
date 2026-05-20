@@ -71,6 +71,6 @@ export function toPackSummary(
   return {
     trialRows,
     committedRows,
-    showTrial: values.pack_type === "TRIAL",
+    showTrial: values.pack_type === "trial_override",
   };
 }

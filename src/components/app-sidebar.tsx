@@ -65,8 +65,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu className="gap-1.5">
             {navItems.map((item) => {
-              const isActive = 
-                location.pathname === item.href || 
+              const isActive =
+                location.pathname === item.href ||
                 (item.href !== "/" && location.pathname.startsWith(item.href));
 
               return (

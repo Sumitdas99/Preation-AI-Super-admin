@@ -2,7 +2,7 @@ import type { PackType } from "@/api/schemas/billing";
 import { SectionHeading } from "../primitives/SectionHeading";
 import { PackTypeRadioCard } from "../primitives/PackTypeRadioCard";
 
-const PACK_TYPES: PackType[] = ["TRIAL", "ENTERPRISE", "STANDARD"];
+const PACK_TYPES: PackType[] = ["trial_override", "enterprise_override", "standard"];
 
 interface PackTypeSectionProps {
   value: PackType;
@@ -11,7 +11,7 @@ interface PackTypeSectionProps {
 
 export function PackTypeSection({ value, onChange }: PackTypeSectionProps) {
   return (
-    <section className="overflow-hidden rounded-lg border-[1.25px] border-slate-200 bg-card shadow-sm">
+    <section className="overflow-hidden rounded-lg border-[1.25px] border-border bg-card shadow-sm">
       <SectionHeading
         index={1}
         title="Pack type"

@@ -28,12 +28,11 @@ export interface OveragePreviewVM {
 
 function meter(
   label: string,
-  metric: UsageMetric,
+  used: number,
+  limit: number,
+  overage: number,
   unit: string,
 ): OverageMeterVM {
-  const limit = Math.max(metric.limit, 0);
-  const used = Math.max(metric.used, 0);
-  const overage = Math.max(metric.overage, 0);
   const percent = limit === 0 ? 0 : Math.min(100, Math.round((used / limit) * 100));
   return {
     label,
@@ -53,59 +52,60 @@ function meter(
 export function toOveragePreviewData(
   preview: OveragePreviewResponse,
 ): OveragePreviewVM {
-  const cycleLabel =
-    formatCycleRange(preview.cycle_start, preview.cycle_end) ?? "—";
-  const days = preview.days_remaining ?? 0;
-  const daysRemainingLabel =
-    days === 1 ? "1 day remaining" : `${days} days remaining`;
+  const cycleLabel = preview.billing_cycle_end ? `Ends ${preview.billing_cycle_end}` : "Current cycle";
+  const daysRemainingLabel = "—";
 
-  const imagesMeter = meter("Images", preview.image_scans, "images");
-  const videoMeter = meter("Video minutes", preview.video_minutes, "minutes");
+  const imageDetail = preview.details?.find(d => d.asset_type === "image");
+  const videoDetail = preview.details?.find(d => d.asset_type === "video");
 
-  const calc = (() => {
-    const overageImg = preview.image_scans.overage;
-    const priceImg = preview.image_scans.overage_unit_price;
-    if (!overageImg || !priceImg) return undefined;
-    const total = overageImg * priceImg;
-    return `MAX(0, images_used − ${preview.image_scans.limit}) × ${formatMoney(
-      priceImg,
-      preview.currency,
-    )} = ${overageImg.toLocaleString()} × ${formatMoney(
-      priceImg,
-      preview.currency,
-    )} = ${formatMoney(total, preview.currency)}`;
-  })();
+  const imagesMeter = meter(
+    "Images",
+    imageDetail?.current_usage ?? 0,
+    imageDetail?.limit ?? 0,
+    imageDetail?.overage_quantity ?? 0,
+    "images"
+  );
+  
+  const videoMeter = meter(
+    "Video minutes",
+    videoDetail?.current_usage ?? 0,
+    videoDetail?.limit ?? 0,
+    videoDetail?.overage_quantity ?? 0,
+    "minutes"
+  );
+
+  const currency = preview.currency ?? "EUR";
 
   return {
     cycleLabel,
     daysRemainingLabel,
     estimatedTotalLabel: formatMoney(
-      preview.estimated_overage_total,
-      preview.currency,
+      preview.total_estimated_cost ?? 0,
+      currency,
     ),
     imagesOverageLabel: imagesMeter.isOverage
       ? `${imagesMeter.overage.toLocaleString()} images`
       : "0 images",
-    imagesUnitPriceLabel: preview.image_scans.overage_unit_price
+    imagesUnitPriceLabel: imageDetail?.overage_price
       ? `Above ${imagesMeter.limit} limit @ ${formatMoney(
-          preview.image_scans.overage_unit_price,
-          preview.currency,
+          imageDetail.overage_price,
+          currency,
         )}/image`
       : undefined,
     videoOverageLabel: videoMeter.isOverage
       ? `${videoMeter.overage.toLocaleString()} minutes`
       : "0 minutes",
-    videoUnitPriceLabel: preview.video_minutes.overage_unit_price
+    videoUnitPriceLabel: videoDetail?.overage_price
       ? videoMeter.isOverage
         ? `Above ${videoMeter.limit} limit @ ${formatMoney(
-            preview.video_minutes.overage_unit_price,
-            preview.currency,
+            videoDetail.overage_price,
+            currency,
           )}/min`
         : `Within ${videoMeter.limit} min limit`
       : undefined,
     imagesMeter,
     videoMeter,
-    calculationNote: calc,
-    currency: preview.currency,
+    calculationNote: undefined,
+    currency,
   };
 }

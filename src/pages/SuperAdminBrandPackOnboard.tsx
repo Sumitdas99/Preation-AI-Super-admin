@@ -2,13 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import {
   createBillingBrand,
   updateBrandPack,
   sendBrandInvitation,
+  updateBillingBrandPackRaw,
+  sendBillingBrandInvitationRaw,
 } from "@/api/endpoints/billing";
 import { useBillingScenario } from "@/api/billingScenario";
 import { Button } from "@/components/ui/button";
@@ -87,7 +89,9 @@ export default function SuperAdminBrandPackOnboard() {
     },
   });
 
-  const stepIndex = searchParams.get("step") === "pack" && brandDetails ? 1 : 0;
+  const stepIndex = searchParams.get("step") === "success" && brandDetails ? 2
+    : searchParams.get("step") === "pack" && brandDetails ? 1
+      : 0;
 
   const handleContinue = detailsForm.handleSubmit(async (values) => {
     try {
@@ -120,22 +124,20 @@ export default function SuperAdminBrandPackOnboard() {
   ) => {
     if (!brandDetails) return;
     setPackDraft(values);
+
     const packPayload = fromPackFormValues(values) as Omit<BrandPack, "brand_id">;
 
     if (createdBrandId) {
       try {
-        await updateBrandPack(createdBrandId, packPayload, scenario);
+        await updateBillingBrandPackRaw(createdBrandId, packPayload);
         if (sendInvitation) {
-          await sendBrandInvitation({ brand_id: createdBrandId }, scenario);
-        }
-        toast.success(
-          sendInvitation
-            ? "Brand onboarded — invitation email sent"
-            : "Brand saved — configure later"
-        );
-        if (sendInvitation) {
-          navigate(`/super-admin/brand-packs/${createdBrandId}`, { replace: true });
+          await sendBillingBrandInvitationRaw(createdBrandId);
+          navigate("?step=success", { replace: true });
+          setTimeout(() => {
+            navigate("/super-admin/brand-packs", { replace: true });
+          }, 3000);
         } else {
+          toast.success("Brand saved — configure later");
           navigate("/super-admin/brand-packs", { replace: true });
         }
       } catch (error) {
@@ -145,26 +147,8 @@ export default function SuperAdminBrandPackOnboard() {
         });
       }
       return;
-    }
-
-    const payload: CreateBrandRequest = {
-      brand_name: brandDetails.brand_name,
-      contact: {
-        brand_admin_name: brandDetails.brand_admin_name,
-        brand_admin_email: brandDetails.brand_admin_email,
-        registered_country: brandDetails.registered_country,
-        registered_address: brandDetails.registered_address,
-      },
-      pack: packPayload,
-    };
-    const result = await createMutation.mutateAsync({
-      payload,
-      sendInvitation,
-    });
-    if (sendInvitation) {
-      navigate(`/super-admin/brand-packs/${result.brand.brand_id}`, { replace: true });
     } else {
-      navigate("/super-admin/brand-packs", { replace: true });
+      toast.error("Brand ID not found. Please try again.");
     }
   };
 
@@ -178,7 +162,7 @@ export default function SuperAdminBrandPackOnboard() {
 
   const currency: Currency = "EUR";
 
-  const stepLabel = stepIndex === 0 ? "Step 1: Brand Details" : "Step 2: Pack Configuration";
+  const stepLabel = stepIndex === 0 ? "Step 1: Brand Details" : stepIndex === 1 ? "Step 2: Pack Configuration" : "Step 3: Success";
 
   return (
     <div className="flex flex-col pb-8">
@@ -270,11 +254,20 @@ export default function SuperAdminBrandPackOnboard() {
                 }} />}
               primaryLabel="Save pack & send invitation"
               onPrimarySubmit={(values) => submitOnboarding(values, true)}
-              secondaryLabel="Save & configure later"
-              secondaryVariant="outline"
-              onSecondarySubmit={(values) => submitOnboarding(values, false)}
               ghostLabel="Back to brand details"
               onGhost={handleBack} />
+          </div>
+        ) : null}
+
+        {stepIndex === 2 ? (
+          <div className="flex flex-col items-center justify-center py-20 space-y-6 bg-card rounded-xl border shadow-sm">
+            <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center animate-in zoom-in duration-500">
+              <CheckCircle2 className="w-12 h-12 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground">API call successfully completed</h2>
+            <p className="text-muted-foreground text-center max-w-md">
+              Brand pack configured and invitation sent. Redirecting back to brand packs...
+            </p>
           </div>
         ) : null}
       </div>

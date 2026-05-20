@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import type { BrandSummaryRow } from "../types";
 import { BrandListRow } from "../rows/BrandListRow";
 
-const DIVIDER_PASSIVE = "w-px shrink-0 self-stretch bg-border";
-const DIVIDER_ACTIVE = "w-[3px] shrink-0 self-stretch bg-[#0A1F44]";
+const DIVIDER_PASSIVE = "shrink-0 bg-border h-px w-full md:w-px md:h-auto md:self-stretch";
+const DIVIDER_ACTIVE = "shrink-0 bg-primary h-[3px] w-full md:w-[3px] md:h-auto md:self-stretch";
 
 interface BrandListPanelProps {
   rows: BrandSummaryRow[];
@@ -33,11 +33,11 @@ export function BrandListPanel({
   return (
     <aside
       className={cn(
-        "flex h-full min-h-0 flex-col overflow-hidden bg-white",
+        "flex md:h-full min-h-0 flex-col overflow-hidden bg-background",
         className,
       )}
     >
-      <div className="flex">
+      <div className="hidden md:flex">
         <p className="flex-1 px-6 pt-[19px] pb-2 text-[13px] font-extrabold uppercase tracking-wide text-foreground/70">
           All Brands
         </p>
@@ -45,7 +45,7 @@ export function BrandListPanel({
       </div>
 
       <div className="flex">
-        <div className="flex-1 border-b px-4 pb-4">
+        <div className="flex-1 border-b border-border p-2 md:px-4 md:pb-4 md:pt-0">
           <div className="group/search relative">
             <Search
               aria-hidden
@@ -56,7 +56,7 @@ export function BrandListPanel({
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               placeholder="Search brands..."
-              className="h-9 rounded-md border border-slate-200 bg-white pl-9 text-sm shadow-none placeholder:text-muted-foreground/50 focus:border-2 focus:border-[#0A1F44] focus:outline-hidden focus:ring-0 focus:placeholder:text-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-9 rounded-md border border-input bg-background pl-9 text-sm shadow-sm placeholder:text-muted-foreground/50 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0"
               aria-label="Search brands"
             />
           </div>
@@ -64,11 +64,11 @@ export function BrandListPanel({
         <div className={DIVIDER_PASSIVE} />
       </div>
 
-      <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto scrollbar-hide">
+      <nav className="flex md:flex-1 flex-row md:flex-col overflow-x-auto md:overflow-x-hidden md:overflow-y-auto scrollbar-hide">
         {isPending ? (
           <BrandListSkeleton />
         ) : rows.length === 0 ? (
-          <div className="flex flex-1">
+          <div className="flex flex-1 w-full flex-col md:flex-row">
             <p className="flex-1 px-6 py-6 text-center text-xs text-muted-foreground">
               No brands match your search.
             </p>
@@ -79,7 +79,7 @@ export function BrandListPanel({
             {rows.map((row) => {
               const selected = row.brandId === selectedBrandId;
               return (
-                <div key={row.brandId} className="flex">
+                <div key={row.brandId} className="flex w-48 shrink-0 flex-col md:w-auto md:flex-row">
                   <BrandListRow
                     row={row}
                     selected={selected}
@@ -89,7 +89,7 @@ export function BrandListPanel({
                 </div>
               );
             })}
-            <div className="flex flex-1">
+            <div className="flex flex-1 w-8 md:w-auto flex-col md:flex-row">
               <div className="flex-1" />
               <div className={DIVIDER_PASSIVE} />
             </div>
@@ -98,11 +98,11 @@ export function BrandListPanel({
       </nav>
 
       <div className="flex">
-        <div className="flex-1 border-t p-3">
+        <div className="flex-1 border-t p-2 md:p-3">
           <Button
             type="button"
             onClick={onOnboardClick}
-            className="w-full justify-center gap-1.5 bg-[#0A1F44] text-white hover:bg-[#0A1F44]/90"
+            className="w-full justify-center gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" /> Onboard new brand
           </Button>
@@ -115,9 +115,9 @@ export function BrandListPanel({
 
 function BrandListSkeleton() {
   return (
-    <div>
+    <div className="flex flex-row md:flex-col">
       {[0, 1, 2, 3].map((i) => (
-        <div key={i} className="flex">
+        <div key={i} className="flex w-48 shrink-0 flex-col md:w-auto md:flex-row">
           <div className="flex-1 border-b px-6 py-3">
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="mt-2 h-3 w-1/2" />

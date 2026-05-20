@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  AdminTopBar,
+
   BrandListPanel,
   EditPanelHeader,
   OveragePreviewCard,
@@ -78,7 +78,7 @@ export default function SuperAdminBrandPacks() {
   const {
     preview,
     isPending: previewPending,
-  } = useOveragePreview(selectedBrandId, { enabled: isActiveSubscription });
+  } = useOveragePreview(selectedBrandId, { enabled: !!selectedBrandId });
 
   const updateMutation = useUpdateBrandPack(selectedBrandId);
 
@@ -118,11 +118,7 @@ export default function SuperAdminBrandPacks() {
 
   return (
     <div className="flex h-screen flex-col bg-background">
-      <AdminTopBar
-        title="Brand Pack Manager"
-        breadcrumbs={breadcrumbs}
-        onMenuClick={() => setDrawerOpen(true)}
-      />
+
 
       <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
         <SheetContent
@@ -141,7 +137,7 @@ export default function SuperAdminBrandPacks() {
         </SheetContent>
       </Sheet>
 
-      <div className="flex min-h-0 flex-1 overflow-hidden bg-white">
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row overflow-hidden bg-background">
         <BrandListPanel
           rows={filteredRows}
           selectedBrandId={selectedBrandId}
@@ -150,7 +146,7 @@ export default function SuperAdminBrandPacks() {
           onQueryChange={setQuery}
           onOnboardClick={handleOnboard}
           isPending={brandsPending}
-          className="hidden w-80 shrink-0 md:flex"
+          className="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r"
         />
 
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
@@ -190,20 +186,18 @@ export default function SuperAdminBrandPacks() {
                   usageCrossRef={
                     preview
                       ? {
-                          imageUsed: preview.image_scans.used,
-                          imageOverage: preview.image_scans.overage,
-                          videoUsed: preview.video_minutes.used,
-                          videoOverage: preview.video_minutes.overage,
-                        }
+                        imageUsed: preview.details?.find(d => d.asset_type === "image")?.current_usage ?? 0,
+                        imageOverage: preview.details?.find(d => d.asset_type === "image")?.overage_quantity ?? 0,
+                        videoUsed: preview.details?.find(d => d.asset_type === "video")?.current_usage ?? 0,
+                        videoOverage: preview.details?.find(d => d.asset_type === "video")?.overage_quantity ?? 0,
+                      }
                       : undefined
                   }
                   topSlot={
-                    isActiveSubscription ? (
-                      <OveragePreviewCard
-                        vm={overageVM}
-                        isPending={previewPending}
-                      />
-                    ) : undefined
+                    <OveragePreviewCard
+                      vm={overageVM}
+                      isPending={previewPending}
+                    />
                   }
                   primaryLabel="Save pack changes"
                   onPrimarySubmit={handleSave}

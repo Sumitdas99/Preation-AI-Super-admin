@@ -37,7 +37,7 @@ export function useBrand(brandId: string | undefined) {
     return {
       ...defaultBrand,
       pack,
-      pack_type: pack?.pack_type || brandFromList?.pack_type || "STANDARD",
+      pack_type: pack?.pack_type || brandFromList?.pack_type || "standard",
       subscription_status: pack?.status || brandFromList?.subscription_status || "ACTIVE",
     } as BrandDetail;
   }, [brandId, brandFromList, query.data]);

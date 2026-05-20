@@ -34,14 +34,14 @@ function buildSubtitle(
   trialEnd?: string,
   subscriptionActive?: boolean,
 ): string {
-  if (packType === "TRIAL") {
+  if (packType === "trial_override") {
     const firstChargeDate = addDaysIso(trialEnd, 1);
     const formattedDate = firstChargeDate ? formatDate(firstChargeDate) : undefined;
     return formattedDate
       ? `Applies from trial end date onwards (${formattedDate}).`
       : "Applies from trial end date onwards.";
   }
-  if (packType === "ENTERPRISE") {
+  if (packType === "enterprise_override") {
     return subscriptionActive
       ? "Charges on activation. Subscription is currently active."
       : "Charges immediately on activation.";
@@ -60,19 +60,18 @@ export function CommittedMonthlyPackSection({
 }: CommittedMonthlyPackSectionProps) {
   const symbol = currencySymbol(currency);
   const subtitle = buildSubtitle(packType, trialEnd, subscriptionActive);
-  const required = packType !== "STANDARD";
+  const required = packType !== "standard";
 
   return (
-    <section className="overflow-hidden rounded-lg border-[1.25px] border-white/10 bg-[#0A1F44] text-white shadow-sm">
+    <section className="overflow-hidden rounded-lg border-[1.25px] border-border bg-card shadow-sm">
       <SectionHeading
         index={sectionIndex}
         title={SECTION_3_HEADER[packType]}
         subtitle={subtitle}
-        variant="dark"
       />
 
       <div className="px-6 py-5">
-        <p className="mb-3 text-xs font-bold uppercase tracking-wider text-white/50">
+        <p className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">
           Pricing
         </p>
         <div className="grid gap-4 md:grid-cols-2">
@@ -85,16 +84,16 @@ export function CommittedMonthlyPackSection({
                 label={`Monthly price (${currency})`}
                 required={required}
                 filled={Boolean(field.value)}
-                variant="dark"
+
                 hint="Billed at the start of each cycle"
               >
                 <div className="relative">
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/50">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-foreground/50">
                     {symbol}
                   </span>
                   <FormInput
                     id="monthly_price"
-                    variant="dark"
+    
                     type="number"
                     min={0}
                     step="0.01"
@@ -118,12 +117,12 @@ export function CommittedMonthlyPackSection({
               <FieldGroup
                 id="override_reason"
                 label="Override reason"
-                variant="dark"
+
                 hint="Optional, for internal reference only"
               >
                 <FormInput
                   id="override_reason"
-                  variant="dark"
+  
                   placeholder="e.g. Q2 2026 pilot — agreed with CEO 14 Apr"
                   value={field.value ?? ""}
                   onChange={field.onChange}
@@ -136,7 +135,7 @@ export function CommittedMonthlyPackSection({
         </div>
 
         <div className="mt-5 pt-1">
-          <p className="mb-3 text-xs font-bold uppercase tracking-wider text-white/50">
+          <p className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">
             Per-cycle scan limits
           </p>
           <div className="grid gap-4 md:grid-cols-2">
@@ -157,7 +156,7 @@ export function CommittedMonthlyPackSection({
                   label="Image scan limit"
                   required={required}
                   filled={Boolean(field.value)}
-                  variant="dark"
+  
                   hint={
                     usageHint
                       ? usageHint
@@ -166,7 +165,7 @@ export function CommittedMonthlyPackSection({
                 >
                   <FormInput
                     id="custom_image_limit"
-                    variant="dark"
+    
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
@@ -202,7 +201,7 @@ export function CommittedMonthlyPackSection({
                   label="Video minutes limit"
                   required={required}
                   filled={Boolean(field.value)}
-                  variant="dark"
+  
                   hint={
                     usageHint
                       ? usageHint
@@ -211,7 +210,7 @@ export function CommittedMonthlyPackSection({
                 >
                   <FormInput
                     id="custom_video_limit"
-                    variant="dark"
+    
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
@@ -233,7 +232,7 @@ export function CommittedMonthlyPackSection({
         </div>
 
         <div className="mt-5 pt-1">
-          <p className="mb-3 text-xs font-bold uppercase tracking-wider text-white/50">
+          <p className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">
             Overage rates
           </p>
           <div className="grid gap-4 md:grid-cols-2">
@@ -246,16 +245,16 @@ export function CommittedMonthlyPackSection({
                   label={`Overage per image (${currency})`}
                   required={required}
                   filled={Boolean(field.value)}
-                  variant="dark"
+  
                   hint="Charged per image that exceeds the committed scan limit"
                 >
                   <div className="relative">
-                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/50">
+                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-foreground/50">
                       {symbol}
                     </span>
                     <FormInput
                       id="overage_image_price"
-                      variant="dark"
+      
                       type="number"
                       min={0}
                       step="0.01"
@@ -281,16 +280,16 @@ export function CommittedMonthlyPackSection({
                   label={`Overage per video minute (${currency})`}
                   required={required}
                   filled={Boolean(field.value)}
-                  variant="dark"
+  
                   hint="Charged per video minute that exceeds the committed limit"
                 >
                   <div className="relative">
-                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/50">
+                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-foreground/50">
                       {symbol}
                     </span>
                     <FormInput
                       id="overage_video_price"
-                      variant="dark"
+      
                       type="number"
                       min={0}
                       step="0.01"

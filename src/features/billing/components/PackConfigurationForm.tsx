@@ -105,9 +105,9 @@ export function PackConfigurationForm({
 
   const triggerSubmit =
     (handler: (values: PackConfigFormValues) => void | Promise<void>) =>
-    handleSubmit(async (validated) => {
-      await handler(validated);
-    });
+      handleSubmit(async (validated) => {
+        await handler(validated);
+      });
 
   return (
     <form
@@ -123,7 +123,7 @@ export function PackConfigurationForm({
         onChange={(v) => setValue("pack_type", v, { shouldDirty: true })}
       />
 
-      {values.pack_type === "TRIAL" ? (
+      {values.pack_type === "trial_override" ? (
         <TrialPeriodSection
           control={control}
           trialEnd={values.trial_end}
@@ -131,11 +131,11 @@ export function PackConfigurationForm({
       ) : null}
 
       <CommittedMonthlyPackSection
-        sectionIndex={values.pack_type === "TRIAL" ? 3 : 2}
+        sectionIndex={values.pack_type === "trial_override" ? 3 : 2}
         packType={values.pack_type}
         currency={currency}
         control={control}
-        trialEnd={values.pack_type === "TRIAL" ? (values.trial_end || trialEndProp) : undefined}
+        trialEnd={values.pack_type === "trial_override" ? (values.trial_end || trialEndProp) : undefined}
         subscriptionActive={subscriptionActive}
         usageCrossRef={usageCrossRef}
       />
@@ -163,7 +163,7 @@ export function PackConfigurationForm({
               variant="ghost"
               onClick={triggerSubmit(onSecondarySubmit)}
               disabled={submitting || secondaryDisabled}
-              className="h-11 shrink-0 border-0 bg-slate-100 font-semibold text-slate-800 hover:bg-slate-200"
+              className="h-11 shrink-0 border-0 bg-secondary font-semibold text-secondary-foreground hover:bg-secondary/80"
             >
               {secondaryLabel}
             </Button>

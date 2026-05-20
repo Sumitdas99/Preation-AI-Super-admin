@@ -1,21 +1,21 @@
 import { z } from "zod";
 
 export const PackType = z.preprocess(
-  (val) => (typeof val === "string" ? val.toUpperCase() : val),
+  (val) => (typeof val === "string" ? val.toLowerCase() : val),
   z.union([
-    z.literal("TRIAL"),
-    z.literal("ENTERPRISE"),
-    z.literal("STANDARD"),
+    z.literal("trial_override"),
+    z.literal("enterprise_override"),
+    z.literal("standard"),
   ])
 );
 export type PackType = z.infer<typeof PackType>;
 
 export const OverrideType = z.preprocess(
-  (val) => (typeof val === "string" ? val.toUpperCase() : val),
+  (val) => (typeof val === "string" ? val.toLowerCase() : val),
   z.union([
-    z.literal("TRIAL_OVERRIDE"),
-    z.literal("ENTERPRISE_OVERRIDE"),
-    z.literal("STANDARD"),
+    z.literal("trial_override"),
+    z.literal("enterprise_override"),
+    z.literal("standard"),
   ])
 );
 export type OverrideType = z.infer<typeof OverrideType>;
@@ -62,7 +62,7 @@ export type Money = z.infer<typeof Money>;
 export const BrandPack = z
   .object({
     brand_id: z.string().optional(),
-    pack_type: PackType.optional().default("STANDARD"),
+    pack_type: PackType.optional().default("standard"),
     override_type: OverrideType.nullable().optional(),
     custom_price: z.preprocess((val) => {
       if (typeof val === "string" && !isNaN(Number(val))) return Number(val);
@@ -232,9 +232,24 @@ export const UsageSnapshot = z
   .passthrough();
 export type UsageSnapshot = z.infer<typeof UsageSnapshot>;
 
-export const OveragePreviewResponse = UsageSnapshot.extend({
-  applies: z.boolean().default(true),
+export const OveragePreviewDetail = z.object({
+  asset_type: z.string(),
+  limit: z.number(),
+  current_usage: z.number(),
+  overage_quantity: z.number(),
+  overage_price: z.union([z.string(), z.number()]).transform(v => Number(v)),
+  projected_cost: z.union([z.string(), z.number()]).transform(v => Number(v)),
 });
+export type OveragePreviewDetail = z.infer<typeof OveragePreviewDetail>;
+
+export const OveragePreviewResponse = z.object({
+  brand_id: z.string(),
+  billing_cycle_end: z.string().nullable().optional(),
+  details: z.array(OveragePreviewDetail).default([]),
+  total_estimated_cost: z.union([z.string(), z.number()]).transform(v => Number(v)),
+  applies: z.boolean().default(true),
+  currency: Currency.default("EUR").optional(),
+}).passthrough();
 export type OveragePreviewResponse = z.infer<typeof OveragePreviewResponse>;
 
 export const PaymentStatus = z

@@ -34,7 +34,7 @@ export function SectionHeading({
           "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold",
           isDark
             ? "bg-white/10 text-white ring-1 ring-white/20"
-            : "bg-[#0A1F44] text-white",
+            : "bg-primary text-primary-foreground",
         )}
       >
         {index}
@@ -43,7 +43,7 @@ export function SectionHeading({
         <h3
           className={cn(
             "text-xl font-semibold leading-none",
-            isDark ? "text-white" : "text-slate-600",
+            isDark ? "text-white" : "text-foreground",
           )}
         >
           {title}

@@ -19,7 +19,7 @@ export function TrialPeriodSection({
   const firstChargeLabel = firstChargeIso ? formatDate(firstChargeIso) : "—";
 
   return (
-    <section className="overflow-hidden rounded-lg border-[1.25px] border-slate-200 bg-card shadow-sm">
+    <section className="overflow-hidden rounded-lg border-[1.25px] border-border bg-card shadow-sm">
       <SectionHeading
         index={2}
         title="Trial period settings"
@@ -59,7 +59,7 @@ export function TrialPeriodSection({
               value={firstChargeLabel}
               readOnly
               tabIndex={-1}
-              className="bg-slate-50 text-slate-700"
+              className="bg-accent text-accent-foreground"
             />
           </FieldGroup>
 

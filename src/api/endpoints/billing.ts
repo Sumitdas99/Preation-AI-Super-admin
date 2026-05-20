@@ -82,8 +82,8 @@ export function updateBrandPack(
   scenario: string,
 ): Promise<UpdateBrandPackResponse> {
   UpdateBrandPackRequest.parse(payload);
-  return request(`${ADMIN_BASE}/brands/${encodeURIComponent(brandId)}/pack`, {
-    method: "POST",
+  return request(`${ADMIN_BASE}/subscriptions/${encodeURIComponent(brandId)}/override`, {
+    method: "PUT",
     body: payload,
     schema: UpdateBrandPackResponse,
     headers: billingHeaders(scenario),
@@ -192,5 +192,26 @@ export function createBillingBrand(
   return request(`${baseUrl}/api/v1/billing/admin/brands`, {
     method: "POST",
     body: payload,
+  });
+}
+
+export function updateBillingBrandPackRaw(
+  brandId: string,
+  payload: any,
+): Promise<any> {
+  const baseUrl = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  return request(`${baseUrl}/api/v1/billing/admin/subscriptions/${encodeURIComponent(brandId)}/override`, {
+    method: "PUT",
+    body: payload,
+  });
+}
+
+export function sendBillingBrandInvitationRaw(
+  brandId: string,
+): Promise<any> {
+  const baseUrl = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  return request(`${baseUrl}/api/v1/billing/admin/brands/${encodeURIComponent(brandId)}/invitation`, {
+    method: "POST",
+    body: { brand_id: brandId },
   });
 }

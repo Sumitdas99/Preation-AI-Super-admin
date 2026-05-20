@@ -15,10 +15,10 @@ export function BrandListRow({ row, selected, onSelect }: BrandListRowProps) {
       onClick={() => onSelect(row.brandId)}
       aria-current={selected}
       className={cn(
-        "flex min-w-0 flex-1 items-start border-b px-6 py-4 text-left text-sm transition-colors",
-        "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0A1F44]",
+        "flex min-w-0 flex-1 flex-col items-start border-r border-border md:border-r-0 md:border-b px-4 py-3 md:px-6 md:py-4 text-left text-sm transition-colors",
+        "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         selected
-          ? "bg-blue-50/70 text-[#0A1F44]"
+          ? "bg-primary/10 text-primary"
           : "text-muted-foreground hover:bg-muted/50",
       )}
     >
@@ -26,14 +26,14 @@ export function BrandListRow({ row, selected, onSelect }: BrandListRowProps) {
         <div
           className={cn(
             "truncate font-bold text-sm",
-            selected ? "text-[#0A1F44]" : "text-foreground",
+            selected ? "text-primary" : "text-foreground",
           )}
         >
           {row.brandName}
         </div>
 
         {(row.email || row.country) && (
-          <div className="space-y-0.5">
+          <div className="hidden space-y-0.5 md:block">
             {row.email && (
               <div className="truncate text-xs text-muted-foreground/85 font-medium">
                 {row.email}
@@ -53,8 +53,8 @@ export function BrandListRow({ row, selected, onSelect }: BrandListRowProps) {
         {row.trialExpiresLabel ? (
           <p
             className={cn(
-              "text-[11px] font-semibold leading-tight",
-              selected ? "text-[#0A1F44]/60" : "text-muted-foreground",
+              "hidden md:block text-[11px] font-semibold leading-tight",
+              selected ? "text-primary/60" : "text-muted-foreground",
             )}
           >
             {row.trialExpiresLabel}

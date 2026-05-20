@@ -27,7 +27,7 @@ export function PackTypeRadioCard({
         "group flex h-full w-full flex-col gap-2 rounded-lg p-4 text-left transition outline-hidden",
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         selected
-          ? "bg-[#0A1F44] text-white"
+          ? "bg-primary text-primary-foreground"
           : "bg-muted/30 opacity-90 hover:bg-muted/50",
       )}
     >
@@ -37,19 +37,19 @@ export function PackTypeRadioCard({
             className={cn(
               "flex h-4 w-4 items-center justify-center rounded-full border",
               selected
-                ? "border-white/40 bg-white/15"
-                : "border-slate-300 bg-white group-hover:border-slate-400",
+                ? "border-primary-foreground/40 bg-primary-foreground/15"
+                : "border-border bg-background group-hover:border-ring",
             )}
           >
             {selected ? (
-              <span className="h-1.5 w-1.5 rounded-full bg-white" />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
             ) : null}
           </span>
           <span
             className={cn(
               "text-base",
               selected
-                ? "font-semibold text-white"
+                ? "font-semibold text-primary-foreground"
                 : "font-bold text-foreground/80",
             )}
           >
@@ -62,7 +62,7 @@ export function PackTypeRadioCard({
         className={cn(
           "text-xs leading-relaxed",
           selected
-            ? "font-semibold text-white/85"
+            ? "font-semibold text-primary-foreground/85"
             : "font-bold text-foreground/70",
         )}
       >

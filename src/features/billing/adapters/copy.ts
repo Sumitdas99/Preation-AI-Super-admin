@@ -1,47 +1,47 @@
 import type { PackType } from "@/api/schemas/billing";
 
 export const PACK_TYPE_LABEL: Record<PackType, string> = {
-  TRIAL: "Trial",
-  ENTERPRISE: "Enterprise",
-  STANDARD: "Standard",
+  trial_override: "Trial",
+  enterprise_override: "Enterprise",
+  standard: "Standard",
 };
 
 export const PACK_TYPE_DESCRIPTION: Record<PackType, string> = {
-  TRIAL:
+  trial_override:
     "Free trial with no charges until the trial ends. Payment details are collected upfront so billing starts automatically when the trial period expires.",
-  ENTERPRISE:
+  enterprise_override:
     "Custom pricing with a fixed monthly fee. Billing begins as soon as the subscription is activated.",
-  STANDARD:
+  standard:
     "Pre-configured plan with standard pricing. Ideal for brands that don't need custom rates or limits.",
 };
 
 export const PACK_TYPE_TAG: Record<PackType, string> = {
-  TRIAL: "Trial",
-  ENTERPRISE: "Enterprise",
-  STANDARD: "Standard",
+  trial_override: "Trial",
+  enterprise_override: "Enterprise",
+  standard: "Standard",
 };
 
 export const SECTION_3_HEADER: Record<PackType, string> = {
-  TRIAL: "Committed monthly pack",
-  ENTERPRISE: "Committed monthly pack",
-  STANDARD: "Committed monthly pack",
+  trial_override: "Committed monthly pack",
+  enterprise_override: "Committed monthly pack",
+  standard: "Committed monthly pack",
 };
 
 export const SECTION_3_SUBTITLE: Record<PackType, string> = {
-  TRIAL:
+  trial_override:
     "Applies from trial end date onwards (or immediately for Enterprise) · writes to custom_* columns",
-  ENTERPRISE:
+  enterprise_override:
     "Charges on activation · currently active · Changes to limits or pricing take effect at next cycle close — not immediately.",
-  STANDARD:
+  standard:
     "Optional overrides on top of plan_version defaults · writes to custom_* columns",
 };
 
 export const SECTION_3_COMMITTED_NOTE: Record<PackType, string> = {
-  TRIAL:
+  trial_override:
     "What the brand has committed to paying monthly after the trial ends. For trial customers, the card is on file but not charged until trial_expiry_date + 1 day.",
-  ENTERPRISE:
+  enterprise_override:
     "Charges immediately at cycle start. Pricing edits apply to the next cycle close — current cycle is unaffected.",
-  STANDARD:
+  standard:
     "Standard pack defaults from plan_version. Overrides here apply to this brand only.",
 };
 

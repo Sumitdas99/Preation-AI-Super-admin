@@ -36,13 +36,13 @@ export const packConfigFormSchema = z
       }
     };
 
-    if (data.pack_type === "TRIAL") {
+    if (data.pack_type === "trial_override") {
       requireField("trial_end", "Trial expiry date is required");
       requireField("trial_image_limit", "Trial image scan cap is required");
       requireField("trial_video_limit", "Trial video minutes cap is required");
     }
 
-    if (data.pack_type !== "STANDARD") {
+    if (data.pack_type !== "standard") {
       requireField("monthly_price", "Monthly price is required");
       requireField("custom_image_limit", "Image scan limit is required");
       requireField("custom_video_limit", "Video minutes limit is required");
@@ -54,7 +54,7 @@ export const packConfigFormSchema = z
 export type PackConfigFormValues = z.infer<typeof packConfigFormSchema>;
 
 export const packConfigFormDefaults: PackConfigFormValues = {
-  pack_type: "TRIAL",
+  pack_type: "trial_override",
   trial_end: "",
   trial_image_limit: undefined,
   trial_video_limit: undefined,
