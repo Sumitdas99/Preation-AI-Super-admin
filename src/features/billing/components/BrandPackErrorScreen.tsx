@@ -40,11 +40,11 @@ export function BrandPackErrorScreen({
 export function BrandPackEmptyState() {
   return (
     <div className="flex h-full items-center justify-center p-8">
-      <div className="max-w-md rounded-xl border border-slate-200 bg-white p-6 text-center">
-        <h2 className="text-base font-semibold text-slate-900">
+      <div className="max-w-md rounded-xl border bg-card p-6 text-center shadow-sm">
+        <h2 className="text-base font-semibold text-foreground">
           Select a brand to edit its pack
         </h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-muted-foreground">
           Choose a brand from the list, or onboard a new one to get started.
         </p>
       </div>

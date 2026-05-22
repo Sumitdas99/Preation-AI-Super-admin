@@ -150,15 +150,7 @@ export default function SuperAdminBrandPacks() {
         />
 
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-          {brandsError ? (
-            <BrandPackErrorScreen
-              title="Could not load brands"
-              description={
-                brandsError instanceof Error ? brandsError.message : undefined
-              }
-              onRetry={() => refetchBrands()}
-            />
-          ) : !selectedBrandId ? (
+          {!selectedBrandId ? (
             <BrandPackEmptyState />
           ) : brandError ? (
             <BrandPackErrorScreen

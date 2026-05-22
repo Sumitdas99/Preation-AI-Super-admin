@@ -139,10 +139,10 @@ export const BrandSummary = z
     cycle_end: z.string().optional(),
     last_payment_failure_at: z.string().optional(),
     badge_labels: z.array(z.string()).default([]),
-    country: z.string().optional(),
-    business_contact_email: z.string().optional(),
-    address: z.string().optional(),
-    created_at: z.string().optional(),
+    country: z.string().nullable().optional(),
+    business_contact_email: z.string().nullable().optional(),
+    address: z.string().nullable().optional(),
+    created_at: z.string().nullable().optional(),
   })
   .passthrough();
 export type BrandSummary = z.infer<typeof BrandSummary>;
